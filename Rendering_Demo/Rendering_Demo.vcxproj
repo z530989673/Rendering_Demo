@@ -87,11 +87,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="D3D11Render.cpp" />
+    <ClCompile Include="Debugging\Debug.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3D11Render.h" />
+    <ClInclude Include="Debugging\Debug.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

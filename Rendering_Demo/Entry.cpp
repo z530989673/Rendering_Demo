@@ -11,6 +11,7 @@
 
 #include "Game.h"
 
+#include "Debugging/Debug.h";
 
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -47,7 +48,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	AllocConsole();
 
 	HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);
-	int hCrt = _open_osfhandle((long)handle_out, _O_TEXT);
+	int hCrt = _open_osfhandle((long)handle_out, _O_TEXT); 
 	FILE* hf_out = _fdopen(hCrt, "w");
 	setvbuf(hf_out, NULL, _IONBF, 1);
 	*stdout = *hf_out;
@@ -71,7 +72,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 
 #ifdef _DEBUG
-	wprintf(L"window class: %s successfully created, titled : %s.", g_windowClass, g_WindowTitle);
+	wprintf(L"window class: %s successfully created, titled : %s.\n", g_windowClass, g_WindowTitle);
+	Debug::Log("12asd");
 #endif
 
 	Game* gameInstance = new Game(g_hInst, g_hWnd);
