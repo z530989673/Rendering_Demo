@@ -1,6 +1,10 @@
 //Entry.cpp  the entry of the application 
 //           create the window and run the game
 
+#include "resource.h"
+#include <stdio.h>
+#include <io.h>
+#include <fcntl.h>
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dx11.h>
@@ -11,8 +15,13 @@
 //--------------------------------------------------------------------------------------
 // Global Variables
 //--------------------------------------------------------------------------------------
+
+#define MAX_LOADSTRING 100
+
 HINSTANCE               g_hInst = NULL;
 HWND                    g_hWnd = NULL;
+TCHAR					g_WindowTitle[MAX_LOADSTRING];					// The title bar text
+TCHAR					g_windowClass[MAX_LOADSTRING];			// the main window class name
 
 
 //--------------------------------------------------------------------------------------
@@ -29,17 +38,43 @@ void Render();
 // Entry point to the program. Initializes everything and goes into a message processing 
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
-int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-    UNREFERENCED_PARAMETER( hPrevInstance );
-    UNREFERENCED_PARAMETER( lpCmdLine );
 
-    if( FAILED( InitWindow( hInstance, nCmdShow ) ) )
-        return 0;
+#ifdef _DEBUG
+	//create a console for output
+	//---------------------------------------------------------
+	AllocConsole();
+
+	HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);
+	int hCrt = _open_osfhandle((long)handle_out, _O_TEXT);
+	FILE* hf_out = _fdopen(hCrt, "w");
+	setvbuf(hf_out, NULL, _IONBF, 1);
+	*stdout = *hf_out;
+
+	HANDLE handle_in = GetStdHandle(STD_INPUT_HANDLE);
+	hCrt = _open_osfhandle((long)handle_in, _O_TEXT);
+	FILE* hf_in = _fdopen(hCrt, "r");
+	setvbuf(hf_in, NULL, _IONBF, 128);
+	*stdin = *hf_in;
+	//---------------------------------------------------------
+#endif
+
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	LoadString(hInstance, IDS_APP_TITLE, g_WindowTitle, MAX_LOADSTRING);
+	LoadString(hInstance, IDS_ZGO, g_windowClass, MAX_LOADSTRING);
+
+	if (FAILED(InitWindow(hInstance, nCmdShow)))
+		return 0;
+
+
+#ifdef _DEBUG
+	wprintf(L"window class: %s successfully created, titled : %s.", g_windowClass, g_WindowTitle);
+#endif
 
 	Game* gameInstance = new Game(g_hInst, g_hWnd);
-
-	
 
 	if ( FAILED(gameInstance->initGame()) )
     {
@@ -81,12 +116,12 @@ HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-	wcex.hIcon = LoadIcon(hInstance, (LPCTSTR)IDI_APPLICATION);
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
     wcex.hCursor = LoadCursor( NULL, IDC_ARROW );
     wcex.hbrBackground = ( HBRUSH )( COLOR_WINDOW + 1 );
     wcex.lpszMenuName = NULL;
-    wcex.lpszClassName = L"TutorialWindowClass";
-	wcex.hIconSm = LoadIcon(wcex.hInstance, (LPCTSTR)IDI_APPLICATION);
+	wcex.lpszClassName = g_windowClass;
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON));
     if( !RegisterClassEx( &wcex ) )
         return E_FAIL;
 
@@ -94,13 +129,13 @@ HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )
     g_hInst = hInstance;
     RECT rc = { 0, 0, 1024, 700 };
     AdjustWindowRect( &rc, WS_OVERLAPPEDWINDOW, FALSE );
-    g_hWnd = CreateWindow( L"TutorialWindowClass", L"Direct3D 11 Tutorial 1: Direct3D 11 Basics", WS_OVERLAPPEDWINDOW,
+	g_hWnd = CreateWindow(g_windowClass, g_WindowTitle, WS_OVERLAPPEDWINDOW,
                            CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance,
                            NULL );
     if( !g_hWnd )
         return E_FAIL;
 
-    ShowWindow( g_hWnd, nCmdShow );
+	ShowWindow(g_hWnd, nCmdShow);
 
     return S_OK;
 }
