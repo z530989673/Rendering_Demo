@@ -12,9 +12,11 @@ public:
 	~Debug();
 
 	template<typename T>
-	void static Log(T value)
+	inline void static Log(T value)
 	{
+#ifdef DEBUG
 		std::cout << value;
+#endif // DEBUG
 	}
 };
 

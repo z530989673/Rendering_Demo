@@ -42,7 +42,7 @@ void Render();
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	//create a console for output
 	//---------------------------------------------------------
 	AllocConsole();
@@ -71,7 +71,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		return 0;
 
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	wprintf(L"window class: %s successfully created, titled : %s.\n", g_windowClass, g_WindowTitle);
 	Debug::Log("12asd");
 #endif
