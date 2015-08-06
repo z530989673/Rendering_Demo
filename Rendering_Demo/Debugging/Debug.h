@@ -15,7 +15,7 @@ public:
 	inline void static Log(T value)
 	{
 #ifdef DEBUG
-		std::cout << value;
+		std::cout << value << std::endl;
 #endif // DEBUG
 	}
 };

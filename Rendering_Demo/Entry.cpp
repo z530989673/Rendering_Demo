@@ -7,9 +7,8 @@
 #include <fcntl.h>
 #include <windows.h>
 #include <d3d11.h>
-#include <d3dx11.h>
 
-#include "Game.h"
+#include "Engine/Game.h"
 
 #include "Debugging/Debug.h";
 
@@ -73,14 +72,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 #ifdef DEBUG
 	wprintf(L"window class: %s successfully created, titled : %s.\n", g_windowClass, g_WindowTitle);
-	Debug::Log("12asd");
 #endif
 
 	Game* gameInstance = new Game(g_hInst, g_hWnd);
 
 	if ( FAILED(gameInstance->initGame()) )
     {
-		gameInstance->exit();
+		gameInstance->exitGame();
         return 0;
     }
 
@@ -99,7 +97,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
     }
 
-	gameInstance->exit();
+	gameInstance->exitGame();
 
     return ( int )msg.wParam;
 }
@@ -121,7 +119,7 @@ HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )
 	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
     wcex.hCursor = LoadCursor( NULL, IDC_ARROW );
     wcex.hbrBackground = ( HBRUSH )( COLOR_WINDOW + 1 );
-    wcex.lpszMenuName = NULL;
+	wcex.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
 	wcex.lpszClassName = g_windowClass;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_ICON));
     if( !RegisterClassEx( &wcex ) )

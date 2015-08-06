@@ -1,9 +1,11 @@
-#include "D3D11Render.h"
+#include "D3D11Renderer.h"
+
+D3D11Renderer* D3D11Renderer::_instance = nullptr;
 
 //--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
-HRESULT D3D11Render::InitDevice(HWND g_hWnd)
+HRESULT D3D11Renderer::InitDevice(HWND g_hWnd)
 {
 	HRESULT hr = S_OK;
 
@@ -49,9 +51,9 @@ HRESULT D3D11Render::InitDevice(HWND g_hWnd)
 
 	for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
 	{
-		g_driverType = driverTypes[driverTypeIndex];
-		hr = D3D11CreateDeviceAndSwapChain(NULL, g_driverType, NULL, createDeviceFlags, featureLevels, numFeatureLevels,
-			D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &g_featureLevel, &g_pImmediateContext);
+		m_driverType = driverTypes[driverTypeIndex];
+		hr = D3D11CreateDeviceAndSwapChain(NULL, m_driverType, NULL, createDeviceFlags, featureLevels, numFeatureLevels,
+			D3D11_SDK_VERSION, &sd, &m_pSwapChain, &m_pd3dDevice, &m_featureLevel, &m_pImmediateContext);
 		if (SUCCEEDED(hr))
 			break;
 	}
@@ -60,16 +62,16 @@ HRESULT D3D11Render::InitDevice(HWND g_hWnd)
 
 	// Create a render target view
 	ID3D11Texture2D* pBackBuffer = NULL;
-	hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 	if (FAILED(hr))
 		return hr;
 
-	hr = g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &g_pRenderTargetView);
+	hr = m_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pRenderTargetView);
 	pBackBuffer->Release();
 	if (FAILED(hr))
 		return hr;
 
-	g_pImmediateContext->OMSetRenderTargets(1, &g_pRenderTargetView, NULL);
+	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, NULL);
 
 	// Setup the viewport
 	D3D11_VIEWPORT vp;
@@ -79,7 +81,7 @@ HRESULT D3D11Render::InitDevice(HWND g_hWnd)
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
-	g_pImmediateContext->RSSetViewports(1, &vp);
+	m_pImmediateContext->RSSetViewports(1, &vp);
 
 	return S_OK;
 }
@@ -87,32 +89,32 @@ HRESULT D3D11Render::InitDevice(HWND g_hWnd)
 //--------------------------------------------------------------------------------------
 // Clean up the objects we've created
 //--------------------------------------------------------------------------------------
-void D3D11Render::CleanupDevice()
+void D3D11Renderer::CleanupDevice()
 {
-	if (g_pImmediateContext) g_pImmediateContext->ClearState();
+	if (m_pImmediateContext) m_pImmediateContext->ClearState();
 
-	if (g_pRenderTargetView) g_pRenderTargetView->Release();
-	if (g_pSwapChain) g_pSwapChain->Release();
-	if (g_pImmediateContext) g_pImmediateContext->Release();
-	if (g_pd3dDevice) g_pd3dDevice->Release();
+	if (m_pRenderTargetView) m_pRenderTargetView->Release();
+	if (m_pSwapChain) m_pSwapChain->Release();
+	if (m_pImmediateContext) m_pImmediateContext->Release();
+	if (m_pd3dDevice) m_pd3dDevice->Release();
 }
 
 //--------------------------------------------------------------------------------------
 // Render the frame
 //--------------------------------------------------------------------------------------
-void D3D11Render::Render()
+void D3D11Renderer::Draw()
 {
 	// Just clear the backbuffer
-	float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f }; //red,green,blue,alpha
-	g_pImmediateContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
-	g_pSwapChain->Present(0, 0);
+	float ClearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; //red,green,blue,alpha
+	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
+	m_pSwapChain->Present(0, 0);
 }
 
-D3D11Render::D3D11Render()
+D3D11Renderer::D3D11Renderer()
 {
 }
 
 
-D3D11Render::~D3D11Render()
+D3D11Renderer::~D3D11Renderer()
 {
 }
