@@ -2,7 +2,7 @@
 
 bool Game::InitGame()
 {
-	return renderer->InitDevice(g_hWnd);
+	return renderer->Init(g_hWnd);
 }
 
 void Game::Start()
@@ -13,7 +13,7 @@ void Game::Start()
 	GameObject* go = new GameObject();
 	RenderingComponent* rc = new RenderingComponent();
 	rc->Prepare();
-	go->addComponent(rc);
+	go->AddComponent(rc);
 
 	go->parent = GameObject::ROOTNODE;
 
@@ -21,7 +21,7 @@ void Game::Start()
 
 void Game::Update()
 {
-	GameObject::ROOTNODE->update();
+	GameObject::ROOTNODE->Update();
 	renderer->Draw();
 }
 

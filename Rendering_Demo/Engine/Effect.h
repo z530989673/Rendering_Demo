@@ -18,6 +18,7 @@ protected:
 	ID3D11DomainShader* m_domainShader;
 	ID3D11ComputeShader* m_computeShader;
 
+	//should be loaded from resource manager!!!!!
 	ID3DBlob *m_vsBlob;
 	ID3DBlob *m_psBlob;
 	ID3DBlob *m_gsBlob;
@@ -26,15 +27,11 @@ protected:
 	ID3DBlob *m_csBlob;
 
 	ID3D11InputLayout* m_inputLayout;
-	std::vector<D3D11_INPUT_ELEMENT_DESC> m_vertexDesc;
-	ID3D11ShaderResourceView** m_shaderResources;
-	ID3D11ShaderResourceView** m_outputShaderResources;
-	ID3D11UnorderedAccessView** m_unorderedAccessViews;
+	std::vector<RenderingComponent*> m_renderingComponents;
 
 	virtual void CreateInputLayout();
 	void ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint = "main");
 
-	std::vector<RenderingComponent*> m_renderingComponents;
 public:
 	void AddRenderingComponent(RenderingComponent*);
 	std::vector<RenderingComponent*> GetRenderingComponents(){ return m_renderingComponents; }
@@ -56,5 +53,10 @@ private:
 class DefaultEffect :
 	public Effect
 {
-
+	DefaultEffect(const std::wstring& vsPath,
+		const std::wstring& psPath,
+		const std::wstring& gsPath = L"",
+		const std::wstring& hsPath = L"",
+		const std::wstring& dsPath = L"",
+		const std::wstring& csPath = L"");
 };

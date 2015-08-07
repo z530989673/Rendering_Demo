@@ -11,12 +11,12 @@ public:
 	GameObject* parent;
 	std::vector<GameObject*> children;
 
-	void addComponent(Component*);
-	//void removeComponent(Component*);
-	//void addChild(GameObject*);
-	//void removeChild(GameObject*);
+	void AddComponent(Component*);
+	//void RemoveComponent(Component*);
+	void AddChild(GameObject*);
+	void RemoveChild(GameObject*);
 
-	void update();
+	void Update();
 
 	GameObject();
 	~GameObject();

@@ -158,11 +158,11 @@ void Effect::Prepare() {
 
 Effect::~Effect()
 {
-	SafeDeleteArray(m_shaderResources);
 	ReleaseCOM(m_vertexShader);
 	ReleaseCOM(m_pixelShader);
 	ReleaseCOM(m_geometryShader);
 	ReleaseCOM(m_hullShader);
 	ReleaseCOM(m_domainShader);
 	ReleaseCOM(m_computeShader);
+	ReleaseCOM(m_inputLayout);
 }

@@ -17,7 +17,7 @@ public:
 	~D3D11Renderer();
 
 	void Draw();
-	HRESULT InitDevice(HWND g_hWnd);
+	HRESULT Init(HWND g_hWnd);
 	void CleanupDevice();
 
 	ID3D11Device* GetD3DDevice() { return m_pd3dDevice; }
@@ -33,5 +33,7 @@ private:
 	ID3D11DeviceContext*    m_pDeviceContext = NULL;
 	IDXGISwapChain*         m_pSwapChain = NULL;
 	ID3D11RenderTargetView* m_pRenderTargetView = NULL;
+	ID3D11Texture2D*        m_pDepthStencil = NULL;
+	ID3D11DepthStencilView* m_pDepthStencilView = NULL;
 };
 

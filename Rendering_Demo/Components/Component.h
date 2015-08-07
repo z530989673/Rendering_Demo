@@ -8,7 +8,7 @@ class Component
 public:
 	GameObject* gameObject;
 
-	virtual void update(){};
+	virtual void Update(){};
 
 	Component();
 	~Component();

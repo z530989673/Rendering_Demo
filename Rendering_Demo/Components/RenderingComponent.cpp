@@ -68,4 +68,6 @@ RenderingComponent::RenderingComponent()
 
 RenderingComponent::~RenderingComponent()
 {
+	ReleaseCOM(m_indexBufferGPU);
+	ReleaseCOM(m_VertexBufferGPU);
 }

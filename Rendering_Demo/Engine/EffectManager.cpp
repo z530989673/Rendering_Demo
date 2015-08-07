@@ -29,4 +29,5 @@ void EffectManager::RemoveRenderingEffect(Effect* value)
 
 EffectManager::~EffectManager()
 {
+	SafeDelete(defaultEffect);
 }
