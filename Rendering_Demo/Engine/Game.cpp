@@ -1,17 +1,31 @@
 #include "Game.h"
 
-bool Game::initGame()
+bool Game::InitGame()
 {
 	return renderer->InitDevice(g_hWnd);
 }
 
+void Game::Start()
+{
+	//temp for test
+	//EffectManager::Instance()->AddRenderingEffect(EffectManager::Instance()->defaultEffect);
+
+	GameObject* go = new GameObject();
+	RenderingComponent* rc = new RenderingComponent();
+	rc->Prepare();
+	go->addComponent(rc);
+
+	go->parent = GameObject::ROOTNODE;
+
+}
+
 void Game::Update()
 {
-	GameObject::ROOTNODE.update();
+	GameObject::ROOTNODE->update();
 	renderer->Draw();
 }
 
-void Game::exitGame()
+void Game::ExitGame()
 {
 	renderer->CleanupDevice();
 }

@@ -1,10 +1,12 @@
 #pragma once
 #include <d3d11.h>
-#include <Modules/RenderingModule.h>
+#include <Components/RenderingComponent.h>
 #include "Includes.h"
 #include "D3D11Renderer.h"
 
 #define D3D_COMPILE_STANDARD_FILE_INCLUDE ((ID3DInclude*)(UINT_PTR)1)
+
+class RenderingComponent;
 
 class Effect
 {
@@ -29,19 +31,30 @@ protected:
 	ID3D11ShaderResourceView** m_outputShaderResources;
 	ID3D11UnorderedAccessView** m_unorderedAccessViews;
 
+	virtual void CreateInputLayout();
 	void ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint = "main");
-public:
-	std::vector<RenderingModule*> m_renderingModule;
 
-	Effect();
+	std::vector<RenderingComponent*> m_renderingComponents;
+public:
+	void AddRenderingComponent(RenderingComponent*);
+	std::vector<RenderingComponent*> GetRenderingComponents(){ return m_renderingComponents; }
+
 	Effect(const std::wstring& vsPath,
 		const std::wstring& psPath,
-		const std::wstring& gsPath,
-		const std::wstring& hsPath,
-		const std::wstring& dsPath,
-		const std::wstring& csPath);
+		const std::wstring& gsPath = L"",
+		const std::wstring& hsPath = L"",
+		const std::wstring& dsPath = L"",
+		const std::wstring& csPath = L"");
+	virtual void Prepare();
+
 	virtual ~Effect();
 
-
+private:
+	Effect();
 };
 
+class DefaultEffect :
+	public Effect
+{
+
+};

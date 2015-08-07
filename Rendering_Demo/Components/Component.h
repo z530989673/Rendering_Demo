@@ -3,14 +3,14 @@
 
 class GameObject;
 
-class Module
+class Component
 {
 public:
 	GameObject* gameObject;
 
-	virtual void update() = 0;
+	virtual void update(){};
 
-	Module();
-	~Module();
+	Component();
+	~Component();
 };
 

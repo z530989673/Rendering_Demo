@@ -87,27 +87,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="Components\RenderingComponent.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="Debugging\Debug.cpp" />
     <ClCompile Include="Engine\Effect.cpp" />
     <ClCompile Include="Engine\EffectManager.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="Modules\Module.cpp" />
-    <ClCompile Include="Modules\RenderingModule.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Resources\FBXReader.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\RenderingComponent.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="Debugging\Debug.h" />
     <ClInclude Include="Engine\Effect.h" />
     <ClInclude Include="Engine\EffectManager.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Includes.h" />
-    <ClInclude Include="Modules\Module.h" />
-    <ClInclude Include="Modules\RenderingModule.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources\FBXReader.h" />

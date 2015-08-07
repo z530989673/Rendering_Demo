@@ -15,13 +15,13 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{97eace19-1efe-4350-b599-272b0a1f3c34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Modules">
-      <UniqueIdentifier>{dea4e370-f291-4bda-b09b-a1e05f71d737}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{78910485-494a-4f90-ba38-7e8e13ceb7c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game">
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{31b162f5-cfa0-44ea-8e26-0c5095861198}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{0b4be463-cba8-4a95-a440-63b5a845494c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -32,9 +32,6 @@
     <ClCompile Include="Debugging\Debug.cpp">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
-    <ClCompile Include="Modules\Module.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\GameObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -44,20 +41,23 @@
     <ClCompile Include="Resources\ResourceManager.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Modules\RenderingModule.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Game.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Effect.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\EffectManager.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Renderer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\RenderingComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,9 +68,6 @@
     <ClInclude Include="Includes.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Modules\Module.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\GameObject.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
@@ -80,20 +77,23 @@
     <ClInclude Include="Resources\ResourceManager.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Modules\RenderingModule.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Game.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Effect.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\EffectManager.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Renderer.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Component.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RenderingComponent.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

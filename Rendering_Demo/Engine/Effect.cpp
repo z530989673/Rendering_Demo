@@ -8,10 +8,10 @@ Effect::Effect()
 
 Effect::Effect(const std::wstring& vsPath,
 	const std::wstring& psPath,
-	const std::wstring& gsPath = L"",
-	const std::wstring& hsPath = L"",
-	const std::wstring& dsPath = L"",
-	const std::wstring& csPath = L"") :
+	const std::wstring& gsPath,
+	const std::wstring& hsPath,
+	const std::wstring& dsPath,
+	const std::wstring& csPath) :
 	m_vertexShader(0),
 	m_pixelShader(0),
 	m_geometryShader(0),
@@ -93,10 +93,21 @@ Effect::Effect(const std::wstring& vsPath,
 			);
 		HR(hr);
 	}
+
+	CreateInputLayout();
+}
+
+void Effect::AddRenderingComponent(RenderingComponent* rc)
+{
+	if (std::find(m_renderingComponents.begin(), m_renderingComponents.end(), rc) == m_renderingComponents.end())
+	{
+		m_renderingComponents.push_back(rc);
+	}
 }
 
 void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint) {
 	HRESULT hr;
+	ID3DBlob* errMsg;
 	hr = D3DCompileFromFile(
 		filename.c_str(),
 		nullptr,
@@ -106,9 +117,43 @@ void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target
 		D3DCOMPILE_DEBUG,
 		0,
 		blob,
-		nullptr
+		&errMsg
 		);
+#ifdef DEBUG
+	if (errMsg)
+	{
+		Debug::Log((char*)errMsg->GetBufferPointer());
+		errMsg->Release();
+	}
+#endif
 	HR(hr);
+}
+
+void Effect::CreateInputLayout()
+{
+	// Define the input layout
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	UINT numElements = ARRAYSIZE(layout);
+
+	// Create the input layout
+	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateInputLayout(layout, numElements, m_vsBlob->GetBufferPointer(),
+		m_vsBlob->GetBufferSize(), &m_inputLayout));
+}
+
+void Effect::Prepare() {
+	//set shader
+	D3D11Renderer::Instance()->GetD3DContext()->VSSetShader(m_vertexShader, 0, 0);
+	D3D11Renderer::Instance()->GetD3DContext()->PSSetShader(m_pixelShader, 0, 0);
+	D3D11Renderer::Instance()->GetD3DContext()->GSSetShader(m_geometryShader, 0, 0);
+	D3D11Renderer::Instance()->GetD3DContext()->HSSetShader(m_hullShader, 0, 0);
+	D3D11Renderer::Instance()->GetD3DContext()->DSSetShader(m_domainShader, 0, 0);
+	D3D11Renderer::Instance()->GetD3DContext()->CSSetShader(m_computeShader, 0, 0);
+
+	//set InputLayout
+	D3D11Renderer::Instance()->GetD3DContext()->IASetInputLayout(m_inputLayout);
 }
 
 Effect::~Effect()

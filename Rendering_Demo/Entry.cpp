@@ -9,6 +9,7 @@
 #include <d3d11.h>
 
 #include "Engine/Game.h"
+#include "Engine/EffectManager.h"
 
 #include "Debugging/Debug.h";
 
@@ -76,11 +77,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	Game* gameInstance = new Game(g_hInst, g_hWnd);
 
-	if ( FAILED(gameInstance->initGame()) )
+	if ( FAILED(gameInstance->InitGame()) )
     {
-		gameInstance->exitGame();
+		gameInstance->ExitGame();
         return 0;
     }
+
+	gameInstance->Start();
 
     // Main message loop
     MSG msg = {0};
@@ -97,7 +100,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
     }
 
-	gameInstance->exitGame();
+	gameInstance->ExitGame();
 
     return ( int )msg.wParam;
 }

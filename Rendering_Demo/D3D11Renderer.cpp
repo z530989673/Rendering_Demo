@@ -53,7 +53,7 @@ HRESULT D3D11Renderer::InitDevice(HWND g_hWnd)
 	{
 		m_driverType = driverTypes[driverTypeIndex];
 		hr = D3D11CreateDeviceAndSwapChain(NULL, m_driverType, NULL, createDeviceFlags, featureLevels, numFeatureLevels,
-			D3D11_SDK_VERSION, &sd, &m_pSwapChain, &m_pd3dDevice, &m_featureLevel, &m_pImmediateContext);
+			D3D11_SDK_VERSION, &sd, &m_pSwapChain, &m_pd3dDevice, &m_featureLevel, &m_pDeviceContext);
 		if (SUCCEEDED(hr))
 			break;
 	}
@@ -71,7 +71,7 @@ HRESULT D3D11Renderer::InitDevice(HWND g_hWnd)
 	if (FAILED(hr))
 		return hr;
 
-	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, NULL);
+	m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, NULL);
 
 	// Setup the viewport
 	D3D11_VIEWPORT vp;
@@ -81,7 +81,7 @@ HRESULT D3D11Renderer::InitDevice(HWND g_hWnd)
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
-	m_pImmediateContext->RSSetViewports(1, &vp);
+	m_pDeviceContext->RSSetViewports(1, &vp);
 
 	return S_OK;
 }
@@ -91,11 +91,11 @@ HRESULT D3D11Renderer::InitDevice(HWND g_hWnd)
 //--------------------------------------------------------------------------------------
 void D3D11Renderer::CleanupDevice()
 {
-	if (m_pImmediateContext) m_pImmediateContext->ClearState();
+	if (m_pDeviceContext) m_pDeviceContext->ClearState();
 
 	if (m_pRenderTargetView) m_pRenderTargetView->Release();
 	if (m_pSwapChain) m_pSwapChain->Release();
-	if (m_pImmediateContext) m_pImmediateContext->Release();
+	if (m_pDeviceContext) m_pDeviceContext->Release();
 	if (m_pd3dDevice) m_pd3dDevice->Release();
 }
 
@@ -106,7 +106,19 @@ void D3D11Renderer::Draw()
 {
 	// Just clear the backbuffer
 	float ClearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; //red,green,blue,alpha
-	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
+	m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
+
+	std::vector<Effect*> renderingEffects = EffectManager::Instance()->GetRenderingEffects();
+
+	for (auto eff : renderingEffects)
+	{
+		eff->Prepare();
+
+		std::vector<RenderingComponent*> renderingComponents = eff->GetRenderingComponents();
+		for (auto rc : renderingComponents)
+			rc->Draw();
+	}
+
 	m_pSwapChain->Present(0, 0);
 }
 

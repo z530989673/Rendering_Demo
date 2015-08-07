@@ -1,18 +1,18 @@
 #pragma once
 #include "Includes.h"
-#include "Modules/Module.h"
+#include "Components/Component.h"
 
-class Module;
+class Component;
 
 class GameObject
 {
 public:
-	static GameObject ROOTNODE;
+	static GameObject* ROOTNODE;
 	GameObject* parent;
 	std::vector<GameObject*> children;
 
-	void addModule(Module*);
-	//void removeModule(Module*);
+	void addComponent(Component*);
+	//void removeComponent(Component*);
 	//void addChild(GameObject*);
 	//void removeChild(GameObject*);
 
@@ -22,6 +22,6 @@ public:
 	~GameObject();
 
 private:
-		std::vector<Module*> m_modules;
+	std::vector<Component*> m_components;
 };
 

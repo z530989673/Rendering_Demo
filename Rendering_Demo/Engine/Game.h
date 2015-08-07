@@ -4,15 +4,20 @@
 
 #include "Includes.h"
 
+#include "Objects/GameObject.h"
+#include "EffectManager.h"
+#include "Components/RenderingComponent.h"
+
 class Game
 {
 public:
 	Game(HINSTANCE hInst, HWND hWnd);
 	~Game();
 
-	bool initGame();
+	bool InitGame();
+	void Start();
 	void Update();
-	void exitGame();
+	void ExitGame();
 
 private:
 	D3D11Renderer*			renderer; 

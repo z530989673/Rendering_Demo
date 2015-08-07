@@ -1,7 +1,6 @@
 #include <vector>
 #include <assert.h>
-#include "Objects/GameObject.h"
-#include "Modules/Module.h"
+#include <algorithm>
 
 
 #ifdef DEBUG
