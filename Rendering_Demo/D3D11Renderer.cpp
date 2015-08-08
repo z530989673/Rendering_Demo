@@ -144,11 +144,13 @@ void D3D11Renderer::Draw()
 
 	for (auto eff : renderingEffects)
 	{
-		eff->Prepare();
+		eff->BindEffect();
 
 		std::vector<RenderingComponent*> renderingComponents = eff->GetRenderingComponents();
 		for (auto rc : renderingComponents)
 			rc->Draw();
+
+		eff->UnBindEffect();
 	}
 
 	m_pSwapChain->Present(0, 0);

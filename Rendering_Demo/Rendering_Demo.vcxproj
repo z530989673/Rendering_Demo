@@ -120,6 +120,9 @@
     <Image Include="zgo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\common.fx">
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="Shaders\Default_PS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

@@ -39,6 +39,7 @@ void GameObject::Update()
 
 GameObject::GameObject()
 {
+	XMStoreFloat4x4(&worldMX, XMMatrixIdentity());
 }
 
 

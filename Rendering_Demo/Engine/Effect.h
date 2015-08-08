@@ -3,10 +3,26 @@
 #include <Components/RenderingComponent.h>
 #include "Includes.h"
 #include "D3D11Renderer.h"
+#include <DirectXMath.h>
 
 #define D3D_COMPILE_STANDARD_FILE_INCLUDE ((ID3DInclude*)(UINT_PTR)1)
 
 class RenderingComponent;
+
+using namespace DirectX;
+
+struct PEROBJ_CONSTANT_BUFFER
+{
+	XMMATRIX WorldViewProj;
+	XMMATRIX WorldViewInvTranspose;
+	XMMATRIX WorldInvTranspose;
+	XMMATRIX WorldView;
+	XMMATRIX World;
+	XMMATRIX ViewProj;
+	XMMATRIX ShadowTransform;
+	XMMATRIX View;
+	XMMATRIX Projection;
+};
 
 class Effect
 {
@@ -29,10 +45,18 @@ protected:
 	ID3D11InputLayout* m_inputLayout;
 	std::vector<RenderingComponent*> m_renderingComponents;
 
-	virtual void CreateInputLayout();
+	ID3D11Buffer* m_perObjectCB;
+	PEROBJ_CONSTANT_BUFFER m_perObjConstantBuffer;
+
+	virtual void BindConstantBuffer();
+	virtual void BindShaderResource() {}
+	virtual void UnBindConstantBuffer();
+	virtual void UnBindShaderResource();
+	virtual void Start();   // create input Layout
 	void ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint = "main");
 
 public:
+	virtual void UpdateConstantBuffer(RenderingComponent*);
 	void AddRenderingComponent(RenderingComponent*);
 	std::vector<RenderingComponent*> GetRenderingComponents(){ return m_renderingComponents; }
 
@@ -42,7 +66,8 @@ public:
 		const std::wstring& hsPath = L"",
 		const std::wstring& dsPath = L"",
 		const std::wstring& csPath = L"");
-	virtual void Prepare();
+	virtual void BindEffect();
+	virtual void UnBindEffect();
 
 	virtual ~Effect();
 
