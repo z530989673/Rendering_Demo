@@ -3,7 +3,14 @@
 #include <d3d11.h>
 #include <Includes.h>
 #include <Engine/EffectManager.h>
+#include <Engine/CameraManager.h>
 #include <Components/RenderingComponent.h>
+#include <Components/CameraComponent.h>
+#include <Engine/Game.h>
+
+#include <Basic/RenderTexture.h>
+
+class RenderTexture;
 
 class D3D11Renderer
 {
@@ -22,6 +29,7 @@ public:
 
 	ID3D11Device* GetD3DDevice() { return m_pd3dDevice; }
 	ID3D11DeviceContext* GetD3DContext() { return m_pDeviceContext; }
+	float GetAspectRatio() { return m_aspectRatio; }
 
 private:
 	D3D11Renderer();
@@ -35,5 +43,7 @@ private:
 	ID3D11RenderTargetView* m_pRenderTargetView = NULL;
 	ID3D11Texture2D*        m_pDepthStencil = NULL;
 	ID3D11DepthStencilView* m_pDepthStencilView = NULL;
+	ID3D11SamplerState*     m_pSamplerLinear = NULL;
+	float					m_aspectRatio;
 };
 

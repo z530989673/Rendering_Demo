@@ -6,7 +6,6 @@
 #include <io.h>
 #include <fcntl.h>
 #include <windows.h>
-#include <d3d11.h>
 
 #include "Engine/Game.h"
 #include "Engine/EffectManager.h"
@@ -21,6 +20,8 @@
 
 HINSTANCE               g_hInst = NULL;
 HWND                    g_hWnd = NULL;
+UINT					g_wndWidth = 1024;
+UINT					g_wndHeight = 700;
 TCHAR					g_WindowTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR					g_windowClass[MAX_LOADSTRING];			// the main window class name
 
@@ -75,15 +76,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	wprintf(L"window class: %s successfully created, titled : %s.\n", g_windowClass, g_WindowTitle);
 #endif
 
-	Game* gameInstance = new Game(g_hInst, g_hWnd);
-
-	if ( FAILED(gameInstance->InitGame()) )
+	if (FAILED(Game::Instance()->InitGame(g_hInst, g_hWnd)))
     {
-		gameInstance->ExitGame();
+		Game::Instance()->ExitGame();
         return 0;
     }
 
-	gameInstance->Start();
+	Game::Instance()->Start();
 
     // Main message loop
     MSG msg = {0};
@@ -96,11 +95,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
         }
         else
         {
-			gameInstance->Update();
+			Game::Instance()->Update();
         }
     }
 
-	gameInstance->ExitGame();
+	Game::Instance()->ExitGame();
 
     return ( int )msg.wParam;
 }
@@ -130,7 +129,7 @@ HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow )
 
     // Create window
     g_hInst = hInstance;
-    RECT rc = { 0, 0, 1024, 700 };
+	RECT rc = { 0, 0, g_wndWidth, g_wndHeight };
     AdjustWindowRect( &rc, WS_OVERLAPPEDWINDOW, FALSE );
 	g_hWnd = CreateWindow(g_windowClass, g_WindowTitle, WS_OVERLAPPEDWINDOW,
                            CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance,

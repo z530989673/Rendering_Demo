@@ -1,7 +1,6 @@
 #include "Effect.h"
 #include "D3DCompiler.h"
 
-
 Effect::Effect()
 {
 }
@@ -146,18 +145,9 @@ void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target
 	HR(hr);
 }
 
-
 void Effect::UpdateConstantBuffer(RenderingComponent* rc)
 {
-	m_perObjConstantBuffer.World = XMMatrixTranspose(XMLoadFloat4x4(&rc->gameObject->worldMX));
-
-	//should be done in camera!!!
-	XMVECTOR Eye = XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
-	XMVECTOR At = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	XMVECTOR Up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	m_perObjConstantBuffer.View = XMMatrixTranspose(XMMatrixLookAtLH(Eye, At, Up));
-	m_perObjConstantBuffer.Projection = XMMatrixTranspose(XMMatrixPerspectiveFovLH(XM_PIDIV2, 1024 / (FLOAT)700, 0.01f, 100.0f));
+	m_perObjConstantBuffer.World = XMMatrixTranspose(XMLoadFloat4x4(&rc->gameObject->GetWorldTransform()));
 
 	//m_perObjConstantBuffer.ViewProj = m_perObjConstantBuffer.View * m_perObjConstantBuffer.Projection;
 	//m_perObjConstantBuffer.WorldView = m_perObjConstantBuffer.World * m_perObjConstantBuffer.View;
@@ -208,6 +198,13 @@ void Effect::Start()
 	// Create the input layout
 	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateInputLayout(layout, numElements, m_vsBlob->GetBufferPointer(),
 		m_vsBlob->GetBufferSize(), &m_inputLayout));
+}
+
+void Effect::UpdateViewAndProjection(CameraComponent* cc)
+{
+	m_perObjConstantBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_view));
+	m_perObjConstantBuffer.Projection = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_proj));
+
 }
 
 void Effect::BindEffect() {

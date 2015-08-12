@@ -2,6 +2,25 @@
 
 GameObject* GameObject::ROOTNODE = new GameObject();
 
+XMFLOAT4 GameObject::GetPos()
+{
+	return XMFLOAT4(&m_worldTransform.m[3][0]);
+}
+
+XMFLOAT4 GameObject::GetUP()
+{
+	return XMFLOAT4(&m_worldTransform.m[1][0]);
+}
+
+XMFLOAT4 GameObject::GetForward()
+{
+	return XMFLOAT4(&m_worldTransform.m[2][0]);
+}
+
+XMFLOAT4 GameObject::GetRight()
+{
+	return XMFLOAT4(&m_worldTransform.m[0][0]);
+}
 
 void GameObject::RemoveChild(GameObject* go)
 {
@@ -39,7 +58,7 @@ void GameObject::Update()
 
 GameObject::GameObject()
 {
-	XMStoreFloat4x4(&worldMX, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_worldTransform, XMMatrixIdentity());
 }
 
 

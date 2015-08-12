@@ -1,6 +1,7 @@
 #pragma once
 #include <d3d11.h>
 #include <Components/RenderingComponent.h>
+#include <Components/CameraComponent.h>
 #include "Includes.h"
 #include "D3D11Renderer.h"
 #include <DirectXMath.h>
@@ -8,6 +9,7 @@
 #define D3D_COMPILE_STANDARD_FILE_INCLUDE ((ID3DInclude*)(UINT_PTR)1)
 
 class RenderingComponent;
+class CameraComponent;
 
 using namespace DirectX;
 
@@ -58,7 +60,8 @@ protected:
 public:
 	virtual void UpdateConstantBuffer(RenderingComponent*);
 	void AddRenderingComponent(RenderingComponent*);
-	std::vector<RenderingComponent*> GetRenderingComponents(){ return m_renderingComponents; }
+	void UpdateViewAndProjection(CameraComponent*);
+	std::vector<RenderingComponent*>* GetRenderingComponents(){ return &m_renderingComponents; }
 
 	Effect(const std::wstring& vsPath,
 		const std::wstring& psPath,

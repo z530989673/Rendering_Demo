@@ -1,22 +1,39 @@
 #include "Game.h"
 
-bool Game::InitGame()
+Game* Game::m_instance = nullptr;
+
+bool Game::InitGame(HINSTANCE hInst, HWND hWnd)
 {
+
+	renderer = D3D11Renderer::Instance();
+	g_hInst = hInst;
+	g_hWnd = hWnd;
+	GetClientRect(g_hWnd, &g_rect);
+
 	return renderer->Init(g_hWnd);
 }
 
 void Game::Start()
 {
 	//temp for test
-	//EffectManager::Instance()->AddRenderingEffect(EffectManager::Instance()->defaultEffect);
 
+	// add a game object in the scene
 	GameObject* go = new GameObject();
 	RenderingComponent* rc = new RenderingComponent();
 	rc->Prepare();
 	go->AddComponent(rc);
-
 	go->parent = GameObject::ROOTNODE;
 
+	//add a camera
+	GameObject* camera = new GameObject();
+	XMFLOAT4 pos = XMFLOAT4(0.0f, 1.0f, -2.0f, 0.0f);
+	XMFLOAT4 target = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
+	XMFLOAT4 up = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
+	CameraComponent* cc = new CameraComponent(pos, target, up, XM_PIDIV2, 0.1, 100);
+	camera->AddComponent(cc);
+	camera->parent = GameObject::ROOTNODE;
+
+	CameraManager::Instance()->SetMainCamera(cc); 
 }
 
 void Game::Update()
@@ -30,13 +47,9 @@ void Game::ExitGame()
 	renderer->CleanupDevice();
 }
 
-Game::Game(HINSTANCE hInst, HWND hWnd)
+Game::Game()
 {
-	renderer = D3D11Renderer::Instance();
-	g_hInst = hInst;
-	g_hWnd = hWnd;
 }
-
 
 Game::~Game()
 {

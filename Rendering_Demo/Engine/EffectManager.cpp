@@ -1,6 +1,21 @@
 #include "EffectManager.h"
 
-EffectManager* EffectManager::_instance = nullptr;
+EffectManager* EffectManager::m_instance = nullptr;
+
+void EffectManager::DrawEffects(CameraComponent* cc)
+{
+	for (Effect* eff : m_renderingEffects)
+	{
+		eff->BindEffect();
+		eff->UpdateViewAndProjection(cc);
+
+		std::vector<RenderingComponent*>* renderingComponents = eff->GetRenderingComponents();
+		for (auto rc : *renderingComponents)
+			rc->Draw();
+
+		eff->UnBindEffect();
+	}
+}
 
 EffectManager::EffectManager()
 {

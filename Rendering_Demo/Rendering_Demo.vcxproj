@@ -87,10 +87,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Basic\RenderTexture.cpp" />
+    <ClCompile Include="Components\CameraComponent.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\RenderingComponent.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="Debugging\Debug.cpp" />
+    <ClCompile Include="Engine\CameraManager.cpp" />
     <ClCompile Include="Engine\Effect.cpp" />
     <ClCompile Include="Engine\EffectManager.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
@@ -100,10 +103,13 @@
     <ClCompile Include="Resources\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Basic\RenderTexture.h" />
+    <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\RenderingComponent.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="Debugging\Debug.h" />
+    <ClInclude Include="Engine\CameraManager.h" />
     <ClInclude Include="Engine\Effect.h" />
     <ClInclude Include="Engine\EffectManager.h" />
     <ClInclude Include="Engine\Game.h" />

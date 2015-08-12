@@ -9,10 +9,10 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 {
 	HRESULT hr = S_OK;
 
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
+	RECT rc = Game::Instance()->GetScreenRect();
 	UINT width = rc.right - rc.left;
 	UINT height = rc.bottom - rc.top;
+	m_aspectRatio = width / (float)height;
 
 	UINT createDeviceFlags = 0;
 #ifdef _DEBUG
@@ -62,14 +62,11 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 
 	// Create a render target view
 	ID3D11Texture2D* pBackBuffer = NULL;
-	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-	if (FAILED(hr))
-		return hr;
+	HR( m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer));
 
-	hr = m_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pRenderTargetView);
+
+	HR(m_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pRenderTargetView));
 	pBackBuffer->Release();
-	if (FAILED(hr))
-		return hr;
 
 	D3D11_TEXTURE2D_DESC descDepth;
 	ZeroMemory(&descDepth, sizeof(descDepth));
@@ -84,9 +81,7 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
-	hr = m_pd3dDevice->CreateTexture2D(&descDepth, NULL, &m_pDepthStencil);
-	if (FAILED(hr))
-		return hr;
+	HR(m_pd3dDevice->CreateTexture2D(&descDepth, NULL, &m_pDepthStencil));
 
 	// Create the depth stencil view
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
@@ -94,11 +89,7 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 	descDSV.Format = descDepth.Format;
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0;
-	hr = m_pd3dDevice->CreateDepthStencilView(m_pDepthStencil, &descDSV, &m_pDepthStencilView);
-	if (FAILED(hr))
-		return hr;
-
-	m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
+	HR(m_pd3dDevice->CreateDepthStencilView(m_pDepthStencil, &descDSV, &m_pDepthStencilView));
 
 	// Setup the viewport
 	D3D11_VIEWPORT vp;
@@ -109,6 +100,19 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	m_pDeviceContext->RSSetViewports(1, &vp);
+
+
+	// Create the sample state
+	D3D11_SAMPLER_DESC sampDesc;
+	ZeroMemory(&sampDesc, sizeof(sampDesc));
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	HR(m_pd3dDevice->CreateSamplerState(&sampDesc, &m_pSamplerLinear));
 
 	return S_OK;
 }
@@ -131,6 +135,15 @@ void D3D11Renderer::CleanupDevice()
 //--------------------------------------------------------------------------------------
 void D3D11Renderer::Draw()
 {
+	ID3D11SamplerState* samplerState[] = { m_pSamplerLinear, };
+	UINT samplerStateSize = ARRAYSIZE(samplerState);
+	m_pDeviceContext->PSSetSamplers(0, samplerStateSize, samplerState);
+	m_pDeviceContext->VSSetSamplers(0, samplerStateSize, samplerState);
+	m_pDeviceContext->DSSetSamplers(0, samplerStateSize, samplerState);
+	m_pDeviceContext->HSSetSamplers(0, samplerStateSize, samplerState);
+	m_pDeviceContext->GSSetSamplers(0, samplerStateSize, samplerState);
+	m_pDeviceContext->CSSetSamplers(0, samplerStateSize, samplerState);
+
 	// Just clear the backbuffer
 	float ClearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; //red,green,blue,alpha
 	m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
@@ -140,17 +153,24 @@ void D3D11Renderer::Draw()
 	//
 	m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	std::vector<Effect*> renderingEffects = EffectManager::Instance()->GetRenderingEffects();
+	std::vector<CameraComponent*>* cameras = CameraManager::Instance()->getAllCameras();
 
-	for (auto eff : renderingEffects)
+	for (CameraComponent* cc : *cameras)
 	{
-		eff->BindEffect();
+		if (!cc->isEnabled())
+			continue;
 
-		std::vector<RenderingComponent*> renderingComponents = eff->GetRenderingComponents();
-		for (auto rc : renderingComponents)
-			rc->Draw();
+		if (cc != CameraManager::Instance()->GetMainCamera() && cc->GetRenderTarget() != nullptr)
+		{
+			cc->Bind();
+			EffectManager::Instance()->DrawEffects(cc);
+		}
+	}
 
-		eff->UnBindEffect();
+	if (CameraManager::Instance()->GetMainCamera()->isEnabled())
+	{
+		m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
+		EffectManager::Instance()->DrawEffects(CameraManager::Instance()->GetMainCamera());
 	}
 
 	m_pSwapChain->Present(0, 0);

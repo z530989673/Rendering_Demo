@@ -10,6 +10,8 @@ Texture2D		gHeightMap		:	register(t5);
 Texture2DArray	gLayerMapArray	:	register(t6);
 Texture2D		gBlendMap		:	register(t7);
 
+SamplerState samLinear : register( s0 );
+
 cbuffer cbPerObject : register(b0) {
 	matrix gWorldViewProj;
 	matrix gWorldViewInvTranspose;
