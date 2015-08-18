@@ -1,8 +1,6 @@
 #pragma once
 #include "Includes.h"
 #include "Components/Component.h"
-#include <DirectXMath.h>
-using namespace DirectX;
 
 class Component;
 

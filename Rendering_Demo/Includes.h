@@ -1,6 +1,46 @@
+#pragma once
+
 #include <vector>
 #include <assert.h>
 #include <algorithm>
+#include <d3d11.h>
+#include <DirectXMath.h>
+
+using namespace DirectX;
+
+struct Light
+{
+	enum LIGHTTYPE
+	{
+		None = 0,
+		Point = 1,
+		Spot = 2,
+		Directional = 3
+	};
+	XMVECTOR Color;
+	XMVECTOR Position;
+	XMVECTOR Direction;
+	XMVECTOR X_SpotAngleAndY_AttenuationAndZ_LightType;
+};
+
+
+struct PERCAMERA_CONSTANT_BUFFER
+{
+	XMMATRIX View;
+	XMMATRIX Projection;
+	XMMATRIX ViewProj;
+	XMVECTOR EyePosition;
+};
+
+struct PEROBJ_CONSTANT_BUFFER
+{
+	XMMATRIX WorldViewProj;
+	XMMATRIX WorldViewInvTranspose;
+	XMMATRIX WorldInvTranspose;
+	XMMATRIX WorldView;
+	XMMATRIX World;
+	Light	 Lights[8];
+};
 
 
 #ifdef DEBUG

@@ -1,16 +1,18 @@
 #include "EffectManager.h"
 
+//temp
+#include "CameraManager.h"
+
 EffectManager* EffectManager::m_instance = nullptr;
 
-void EffectManager::DrawEffects(CameraComponent* cc)
+void EffectManager::DrawEffects()
 {
 	for (Effect* eff : m_renderingEffects)
 	{
 		eff->BindEffect();
-		eff->UpdateViewAndProjection(cc);
 
 		std::vector<RenderingComponent*>* renderingComponents = eff->GetRenderingComponents();
-		for (auto rc : *renderingComponents)
+		for (RenderingComponent* rc : *renderingComponents)
 			rc->Draw();
 
 		eff->UnBindEffect();
@@ -23,9 +25,9 @@ EffectManager::EffectManager()
 	AddRenderingEffect(defaultEffect);
 }
 
-void EffectManager::SetDefaultEffect(RenderingComponent* rc)
+void EffectManager::AddToDefaultEffect(RenderingComponent* rc)
 {
-	rc->relatedEffect = defaultEffect;
+	rc->m_relatedEffect = defaultEffect;
 	defaultEffect->AddRenderingComponent(rc);
 }
 

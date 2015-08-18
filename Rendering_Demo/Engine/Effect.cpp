@@ -95,7 +95,7 @@ Effect::Effect(const std::wstring& vsPath,
 
 	// Create the per object buffer.
 	D3D11_BUFFER_DESC cbDesc;
-	cbDesc.ByteWidth = sizeof(PEROBJ_CONSTANT_BUFFER);
+	cbDesc.ByteWidth = sizeof(PERCAMERA_CONSTANT_BUFFER);
 	cbDesc.Usage = D3D11_USAGE_DYNAMIC;
 	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -145,34 +145,9 @@ void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target
 	HR(hr);
 }
 
-void Effect::UpdateConstantBuffer(RenderingComponent* rc)
+void Effect::PrepareVertexBuffer(RenderingComponent* rc, UINT& stride)
 {
-	m_perObjConstantBuffer.World = XMMatrixTranspose(XMLoadFloat4x4(&rc->gameObject->GetWorldTransform()));
-
-	//m_perObjConstantBuffer.ViewProj = m_perObjConstantBuffer.View * m_perObjConstantBuffer.Projection;
-	//m_perObjConstantBuffer.WorldView = m_perObjConstantBuffer.World * m_perObjConstantBuffer.View;
-	//m_perObjConstantBuffer.WorldViewProj = m_perObjConstantBuffer.WorldView * m_perObjConstantBuffer.Projection;
-
-	D3D11_MAPPED_SUBRESOURCE ms;
-	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perObjectCB, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-	memcpy(ms.pData, &m_perObjConstantBuffer, sizeof(PEROBJ_CONSTANT_BUFFER));
-	D3D11Renderer::Instance()->GetD3DContext()->Unmap(m_perObjectCB, NULL);
-}
-
-void Effect::BindConstantBuffer()
-{
-	D3D11Renderer::Instance()->GetD3DContext()->VSSetConstantBuffers(0, 1, &m_perObjectCB);
-	D3D11Renderer::Instance()->GetD3DContext()->PSSetConstantBuffers(0, 1, &m_perObjectCB);
-}
-
-void Effect::UnBindConstantBuffer()
-{
-	D3D11Renderer::Instance()->GetD3DContext()->VSSetConstantBuffers(0, 0, nullptr);
-	D3D11Renderer::Instance()->GetD3DContext()->PSSetConstantBuffers(0, 0, nullptr);
-	D3D11Renderer::Instance()->GetD3DContext()->HSSetConstantBuffers(0, 0, nullptr);
-	D3D11Renderer::Instance()->GetD3DContext()->DSSetConstantBuffers(0, 0, nullptr);
-	D3D11Renderer::Instance()->GetD3DContext()->GSSetConstantBuffers(0, 0, nullptr);
-	D3D11Renderer::Instance()->GetD3DContext()->CSSetConstantBuffers(0, 0, nullptr);
+	m_inputLayout->PrepareVertexBuffer(rc, stride);
 }
 
 void Effect::UnBindShaderResource()
@@ -187,24 +162,7 @@ void Effect::UnBindShaderResource()
 
 void Effect::Start()
 {
-	int index = 0;
-	// Define the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT numElements = ARRAYSIZE(layout);
-
-	// Create the input layout
-	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateInputLayout(layout, numElements, m_vsBlob->GetBufferPointer(),
-		m_vsBlob->GetBufferSize(), &m_inputLayout));
-}
-
-void Effect::UpdateViewAndProjection(CameraComponent* cc)
-{
-	m_perObjConstantBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_view));
-	m_perObjConstantBuffer.Projection = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_proj));
-
+	m_inputLayout = new BasicLayout(m_vsBlob);
 }
 
 void Effect::BindEffect() {
@@ -217,9 +175,9 @@ void Effect::BindEffect() {
 	D3D11Renderer::Instance()->GetD3DContext()->CSSetShader(m_computeShader, 0, 0);
 
 	//set InputLayout
-	D3D11Renderer::Instance()->GetD3DContext()->IASetInputLayout(m_inputLayout);
+	m_inputLayout->SetLayout();
 
-	BindConstantBuffer();
+	//BindConstantBuffer();
 	BindShaderResource();
 }
 
@@ -232,7 +190,7 @@ void Effect::UnBindEffect() {
 	D3D11Renderer::Instance()->GetD3DContext()->DSSetShader(nullptr, 0, 0);
 	D3D11Renderer::Instance()->GetD3DContext()->CSSetShader(nullptr, 0, 0);
 
-	UnBindConstantBuffer();
+	//UnBindConstantBuffer();
 	UnBindShaderResource();
 }
 
@@ -244,6 +202,6 @@ Effect::~Effect()
 	ReleaseCOM(m_hullShader);
 	ReleaseCOM(m_domainShader);
 	ReleaseCOM(m_computeShader);
-	ReleaseCOM(m_inputLayout);
+	SafeDelete(m_inputLayout); 
 	ReleaseCOM(m_perObjectCB);
 }

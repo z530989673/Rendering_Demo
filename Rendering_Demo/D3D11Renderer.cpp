@@ -2,9 +2,7 @@
 
 D3D11Renderer* D3D11Renderer::_instance = nullptr;
 
-//--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
-//--------------------------------------------------------------------------------------
 HRESULT D3D11Renderer::Init(HWND g_hWnd)
 {
 	HRESULT hr = S_OK;
@@ -114,12 +112,53 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	HR(m_pd3dDevice->CreateSamplerState(&sampDesc, &m_pSamplerLinear));
 
+	m_perCameraCB = new PERCAMERA_CONSTANT_BUFFER();
+	m_perObjCB = new PEROBJ_CONSTANT_BUFFER();
+
+	// Create the per camera buffer.
+	D3D11_BUFFER_DESC cbCameraDesc;
+	cbCameraDesc.ByteWidth = sizeof(PERCAMERA_CONSTANT_BUFFER);
+	cbCameraDesc.Usage = D3D11_USAGE_DYNAMIC;
+	cbCameraDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbCameraDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbCameraDesc.MiscFlags = 0;
+	cbCameraDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA InitCameraData;
+	InitCameraData.pSysMem = m_perCameraCB;
+	InitCameraData.SysMemPitch = 0;
+	InitCameraData.SysMemSlicePitch = 0;
+
+	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateBuffer(&cbCameraDesc, &InitCameraData,
+		&m_perCameraCBGPU));
+
+	// Create the per object buffer.
+	D3D11_BUFFER_DESC cbObjDesc;
+	cbObjDesc.ByteWidth = sizeof(PEROBJ_CONSTANT_BUFFER);
+	cbObjDesc.Usage = D3D11_USAGE_DYNAMIC;
+	cbObjDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbObjDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbObjDesc.MiscFlags = 0;
+	cbObjDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA InitObjData;
+	InitObjData.pSysMem = m_perObjCB;
+	InitObjData.SysMemPitch = 0;
+	InitObjData.SysMemSlicePitch = 0;
+
+	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateBuffer(&cbObjDesc, &InitObjData,
+		&m_perObjCBGPU));
+
+	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
+	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
+
+	m_pDeviceContext->VSSetConstantBuffers(1, 1, &m_perObjCBGPU);
+	m_pDeviceContext->PSSetConstantBuffers(1, 1, &m_perObjCBGPU);
+
 	return S_OK;
 }
 
-//--------------------------------------------------------------------------------------
 // Clean up the objects we've created
-//--------------------------------------------------------------------------------------
 void D3D11Renderer::CleanupDevice()
 {
 	if (m_pDeviceContext) m_pDeviceContext->ClearState();
@@ -130,9 +169,7 @@ void D3D11Renderer::CleanupDevice()
 	if (m_pd3dDevice) m_pd3dDevice->Release();
 }
 
-//--------------------------------------------------------------------------------------
 // Render the frame
-//--------------------------------------------------------------------------------------
 void D3D11Renderer::Draw()
 {
 	ID3D11SamplerState* samplerState[] = { m_pSamplerLinear, };
@@ -144,15 +181,6 @@ void D3D11Renderer::Draw()
 	m_pDeviceContext->GSSetSamplers(0, samplerStateSize, samplerState);
 	m_pDeviceContext->CSSetSamplers(0, samplerStateSize, samplerState);
 
-	// Just clear the backbuffer
-	float ClearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; //red,green,blue,alpha
-	m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
-
-	//
-	// Clear the depth buffer to 1.0 (max depth)
-	//
-	m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-
 	std::vector<CameraComponent*>* cameras = CameraManager::Instance()->getAllCameras();
 
 	for (CameraComponent* cc : *cameras)
@@ -163,17 +191,51 @@ void D3D11Renderer::Draw()
 		if (cc != CameraManager::Instance()->GetMainCamera() && cc->GetRenderTarget() != nullptr)
 		{
 			cc->Bind();
-			EffectManager::Instance()->DrawEffects(cc);
+			UpdatePerCameraCB(cc);
+			EffectManager::Instance()->DrawEffects();
 		}
 	}
 
 	if (CameraManager::Instance()->GetMainCamera()->isEnabled())
 	{
+		float ClearColor[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
+		m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
+		m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 		m_pDeviceContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
-		EffectManager::Instance()->DrawEffects(CameraManager::Instance()->GetMainCamera());
+		CameraComponent* mainCamera = CameraManager::Instance()->GetMainCamera();
+		UpdatePerCameraCB(mainCamera);
+		EffectManager::Instance()->DrawEffects();
 	}
 
 	m_pSwapChain->Present(0, 0);
+}
+
+
+void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
+{
+	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
+	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
+
+	m_perCameraCB->View = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_view));
+	m_perCameraCB->Projection = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_proj));
+	m_perCameraCB->EyePosition = cc->m_eyePos;
+	m_perCameraCB->ViewProj = m_perCameraCB->View * m_perCameraCB->Projection;
+
+
+	D3D11_MAPPED_SUBRESOURCE ms;
+	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perCameraCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	memcpy(ms.pData, m_perCameraCB, sizeof(PERCAMERA_CONSTANT_BUFFER));
+	D3D11Renderer::Instance()->GetD3DContext()->Unmap(m_perCameraCBGPU, NULL);
+}
+
+void D3D11Renderer::UpdatePerObjectCB(RenderingComponent* rc)
+{
+	m_perObjCB->World = XMMatrixTranspose(XMLoadFloat4x4(&rc->gameObject->GetWorldTransform()));
+
+	D3D11_MAPPED_SUBRESOURCE ms;
+	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perObjCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+	memcpy(ms.pData, m_perObjCB, sizeof(PEROBJ_CONSTANT_BUFFER));
+	D3D11Renderer::Instance()->GetD3DContext()->Unmap(m_perObjCBGPU, NULL);
 }
 
 D3D11Renderer::D3D11Renderer()

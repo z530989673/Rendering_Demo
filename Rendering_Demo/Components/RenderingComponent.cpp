@@ -2,17 +2,7 @@
 
 void RenderingComponent::PrepareGPUBuffer()
 {
-	//create vertex buffer
-	D3D11_BUFFER_DESC vbd;
-	ZeroMemory(&vbd, sizeof(vbd));
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(XMFLOAT3) * m_positionBufferCPU.size();
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	D3D11_SUBRESOURCE_DATA vInitData;
-	ZeroMemory(&vInitData, sizeof(vInitData));
-	vInitData.pSysMem = &m_positionBufferCPU[0];
-	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateBuffer(&vbd, &vInitData, &m_VertexBufferGPU));
+	m_relatedEffect->PrepareVertexBuffer(this,stride);
 
 	//create index buffer
 	D3D11_BUFFER_DESC ibd;
@@ -33,22 +23,19 @@ void RenderingComponent::Draw()
 {
 	D3D11Renderer::Instance()->GetD3DContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	UINT stride = sizeof(XMFLOAT3);
-	UINT offset = 0;
-
 	D3D11Renderer::Instance()->GetD3DContext()->IASetVertexBuffers(0, 1, &m_VertexBufferGPU, &stride, &offset);
 
 	D3D11Renderer::Instance()->GetD3DContext()->IASetIndexBuffer(m_indexBufferGPU, DXGI_FORMAT_R32_UINT, 0);
 
-	relatedEffect->UpdateConstantBuffer(this);
+	D3D11Renderer::Instance()->UpdatePerObjectCB(this);
 
 	D3D11Renderer::Instance()->GetD3DContext()->DrawIndexed(m_indexBufferCPU.size(), 0, 0);
 }
 
 void RenderingComponent::Prepare()
 {
-	if (relatedEffect == NULL)
-		EffectManager::Instance()->SetDefaultEffect(this);
+	if (m_relatedEffect == NULL)
+		EffectManager::Instance()->AddToDefaultEffect(this);
 
 	PrepareGPUBuffer();
 }
@@ -88,7 +75,7 @@ RenderingComponent::RenderingComponent()
 		7, 4, 6,
 	};
 
-	EffectManager::Instance()->SetDefaultEffect(this);
+	EffectManager::Instance()->AddToDefaultEffect(this);
 }
 
 

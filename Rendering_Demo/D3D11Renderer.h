@@ -1,6 +1,5 @@
 #pragma once
 
-#include <d3d11.h>
 #include <Includes.h>
 #include <Engine/EffectManager.h>
 #include <Engine/CameraManager.h>
@@ -11,6 +10,9 @@
 #include <Basic/RenderTexture.h>
 
 class RenderTexture;
+class RenderingComponent;
+class CameraComponent;
+
 
 class D3D11Renderer
 {
@@ -30,6 +32,11 @@ public:
 	ID3D11Device* GetD3DDevice() { return m_pd3dDevice; }
 	ID3D11DeviceContext* GetD3DContext() { return m_pDeviceContext; }
 	float GetAspectRatio() { return m_aspectRatio; }
+	PERCAMERA_CONSTANT_BUFFER* GetPerCameraCB(){ return m_perCameraCB; }
+	PEROBJ_CONSTANT_BUFFER* GetPerObjCB(){ return m_perObjCB; }
+
+	void UpdatePerCameraCB(CameraComponent*);
+	void UpdatePerObjectCB(RenderingComponent*);
 
 private:
 	D3D11Renderer();
@@ -45,5 +52,9 @@ private:
 	ID3D11DepthStencilView* m_pDepthStencilView = NULL;
 	ID3D11SamplerState*     m_pSamplerLinear = NULL;
 	float					m_aspectRatio;
-};
 
+	PERCAMERA_CONSTANT_BUFFER*	m_perCameraCB;
+	PEROBJ_CONSTANT_BUFFER*		m_perObjCB;
+	ID3D11Buffer*				m_perCameraCBGPU;
+	ID3D11Buffer*				m_perObjCBGPU;
+};

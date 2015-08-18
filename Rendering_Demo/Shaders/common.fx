@@ -12,16 +12,41 @@ Texture2D		gBlendMap		:	register(t7);
 
 SamplerState samLinear : register( s0 );
 
-cbuffer cbPerObject : register(b0) {
+struct Light
+{
+	float4 Color;		//only xyz
+	float4 Position;	//only xyz
+	float4 Direction;	//only xyz
+	float4 X_SpotAngleAndY_AttenuationAndZ_LightType;
+};
+
+cbuffer cbPerCamera : register(cb0) {
+	matrix gView;
+	matrix gProjection; 
+	matrix gViewProj;
+	float4 EyePosition;
+}
+
+cbuffer cbPerObject : register(cb1) {
 	matrix gWorldViewProj;
 	matrix gWorldViewInvTranspose;
 	matrix gWorldInvTranspose;
 	matrix gWorldView;
 	matrix gWorld;
-	matrix gViewProj;
-	matrix gShadowTransform;
-	matrix gView;
-	matrix gProjection;
+	Light	 Lights[8];
 };
+
+struct SCREEN_VS_IN
+{
+    float4 Pos : POSITION;
+    float2 Tex : TEXCOORD0;
+};
+
+struct SCREEN_PS_IN
+{
+    float4 Pos : SV_POSITION;
+    float2 Tex : TEXCOORD0;
+};
+
 
 #endif

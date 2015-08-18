@@ -7,8 +7,10 @@
 #include "Objects/GameObject.h"
 #include "EffectManager.h"
 #include "CameraManager.h"
+#include "LightManager.h"
 #include "Components/RenderingComponent.h"
 #include "Components/CameraComponent.h"
+#include "Components/LightComponent.h"
 
 class D3D11Renderer;
 
