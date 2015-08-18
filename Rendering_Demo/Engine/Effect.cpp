@@ -145,6 +145,11 @@ void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target
 	HR(hr);
 }
 
+void Effect::PrepareVertexBuffer(RenderingComponent* rc)
+{
+	m_inputLayout->PrepareVertexBuffer(rc);
+}
+
 void Effect::UpdateConstantBuffer(RenderingComponent* rc)
 {
 	m_perObjConstantBuffer.World = XMMatrixTranspose(XMLoadFloat4x4(&rc->gameObject->GetWorldTransform()));
@@ -187,17 +192,7 @@ void Effect::UnBindShaderResource()
 
 void Effect::Start()
 {
-	int index = 0;
-	// Define the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT numElements = ARRAYSIZE(layout);
-
-	// Create the input layout
-	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateInputLayout(layout, numElements, m_vsBlob->GetBufferPointer(),
-		m_vsBlob->GetBufferSize(), &m_inputLayout));
+	m_inputLayout = new BasicLayout(m_vsBlob);
 }
 
 void Effect::UpdateViewAndProjection(CameraComponent* cc)
@@ -217,7 +212,7 @@ void Effect::BindEffect() {
 	D3D11Renderer::Instance()->GetD3DContext()->CSSetShader(m_computeShader, 0, 0);
 
 	//set InputLayout
-	D3D11Renderer::Instance()->GetD3DContext()->IASetInputLayout(m_inputLayout);
+	m_inputLayout->SetLayout();
 
 	BindConstantBuffer();
 	BindShaderResource();
@@ -244,6 +239,6 @@ Effect::~Effect()
 	ReleaseCOM(m_hullShader);
 	ReleaseCOM(m_domainShader);
 	ReleaseCOM(m_computeShader);
-	ReleaseCOM(m_inputLayout);
+	SafeDelete(m_inputLayout); 
 	ReleaseCOM(m_perObjectCB);
 }

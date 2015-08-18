@@ -23,9 +23,9 @@ EffectManager::EffectManager()
 	AddRenderingEffect(defaultEffect);
 }
 
-void EffectManager::SetDefaultEffect(RenderingComponent* rc)
+void EffectManager::AddToDefaultEffect(RenderingComponent* rc)
 {
-	rc->relatedEffect = defaultEffect;
+	rc->m_relatedEffect = defaultEffect;
 	defaultEffect->AddRenderingComponent(rc);
 }
 

@@ -21,7 +21,7 @@ public:
 	
 	std::vector<Effect*>* GetRenderingEffects(){ return &m_renderingEffects; }
 
-	void SetDefaultEffect(RenderingComponent*);
+	void AddToDefaultEffect(RenderingComponent*);
 
 	void AddRenderingEffect(Effect*);
 	void RemoveRenderingEffect(Effect*);

@@ -15,7 +15,7 @@ public:
 	bool isEnabled();
 
 	Component();
-	~Component();
+	virtual ~Component();
 
 private:
 		bool m_enabled = true;

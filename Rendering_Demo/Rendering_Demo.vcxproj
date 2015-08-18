@@ -97,6 +97,7 @@
     <ClCompile Include="Engine\Effect.cpp" />
     <ClCompile Include="Engine\EffectManager.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
+    <ClCompile Include="Engine\Layout.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Resources\FBXReader.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="Engine\Effect.h" />
     <ClInclude Include="Engine\EffectManager.h" />
     <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\Layout.h" />
     <ClInclude Include="Includes.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="resource.h" />
@@ -129,6 +131,14 @@
     <None Include="Shaders\common.fx">
       <FileType>Document</FileType>
     </None>
+    <FxCompile Include="Shaders\DefaultTex_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RelativeDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\DefaultTex_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RelativeDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Shaders\Default_PS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

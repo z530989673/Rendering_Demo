@@ -1,6 +1,7 @@
 #pragma once
 #include <d3d11.h>
 #include <Components/RenderingComponent.h>
+#include "Engine/Layout.h"
 #include <Components/CameraComponent.h>
 #include "Includes.h"
 #include "D3D11Renderer.h"
@@ -8,6 +9,7 @@
 
 #define D3D_COMPILE_STANDARD_FILE_INCLUDE ((ID3DInclude*)(UINT_PTR)1)
 
+class Layout;
 class RenderingComponent;
 class CameraComponent;
 
@@ -44,7 +46,7 @@ protected:
 	ID3DBlob *m_dsBlob;
 	ID3DBlob *m_csBlob;
 
-	ID3D11InputLayout* m_inputLayout;
+	Layout* m_inputLayout;
 	std::vector<RenderingComponent*> m_renderingComponents;
 
 	ID3D11Buffer* m_perObjectCB;
@@ -58,6 +60,7 @@ protected:
 	void ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint = "main");
 
 public:
+	void PrepareVertexBuffer(RenderingComponent*);
 	virtual void UpdateConstantBuffer(RenderingComponent*);
 	void AddRenderingComponent(RenderingComponent*);
 	void UpdateViewAndProjection(CameraComponent*);

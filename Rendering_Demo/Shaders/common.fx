@@ -24,4 +24,18 @@ cbuffer cbPerObject : register(b0) {
 	matrix gProjection;
 };
 
+
+struct SCREEN_VS_IN
+{
+    float4 Pos : POSITION;
+    float2 Tex : TEXCOORD0;
+};
+
+struct SCREEN_PS_IN
+{
+    float4 Pos : SV_POSITION;
+    float2 Tex : TEXCOORD0;
+};
+
+
 #endif
