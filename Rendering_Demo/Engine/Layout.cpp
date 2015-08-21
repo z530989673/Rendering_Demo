@@ -15,15 +15,24 @@ Layout::~Layout()
 	ReleaseCOM(m_inputLayout);
 }
 
+<<<<<<< HEAD
 void BasicLayout::PrepareVertexBuffer(RenderingComponent* rc, UINT& stride)
 {
 	stride = sizeof(XMFLOAT3);
 
+=======
+void BasicLayout::PrepareVertexBuffer(RenderingComponent* rc)
+{
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 	//create vertex buffer
 	D3D11_BUFFER_DESC vbd;
 	ZeroMemory(&vbd, sizeof(vbd));
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
+<<<<<<< HEAD
 	vbd.ByteWidth = stride * rc->m_positionBufferCPU.size();
+=======
+	vbd.ByteWidth = sizeof(XMFLOAT3) * rc->m_positionBufferCPU.size();
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA vInitData;

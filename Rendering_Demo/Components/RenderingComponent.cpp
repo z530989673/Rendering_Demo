@@ -2,7 +2,11 @@
 
 void RenderingComponent::PrepareGPUBuffer()
 {
+<<<<<<< HEAD
 	m_relatedEffect->PrepareVertexBuffer(this,stride);
+=======
+	m_relatedEffect->PrepareVertexBuffer(this);
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 
 	//create index buffer
 	D3D11_BUFFER_DESC ibd;
@@ -27,7 +31,11 @@ void RenderingComponent::Draw()
 
 	D3D11Renderer::Instance()->GetD3DContext()->IASetIndexBuffer(m_indexBufferGPU, DXGI_FORMAT_R32_UINT, 0);
 
+<<<<<<< HEAD
 	D3D11Renderer::Instance()->UpdatePerObjectCB(this);
+=======
+	m_relatedEffect->UpdateConstantBuffer(this);
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 
 	D3D11Renderer::Instance()->GetD3DContext()->DrawIndexed(m_indexBufferCPU.size(), 0, 0);
 }

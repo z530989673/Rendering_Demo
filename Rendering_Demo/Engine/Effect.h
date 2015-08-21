@@ -42,7 +42,12 @@ protected:
 	void ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint = "main");
 
 public:
+<<<<<<< HEAD
 	void PrepareVertexBuffer(RenderingComponent*,UINT&);
+=======
+	void PrepareVertexBuffer(RenderingComponent*);
+	virtual void UpdateConstantBuffer(RenderingComponent*);
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 	void AddRenderingComponent(RenderingComponent*);
 	std::vector<RenderingComponent*>* GetRenderingComponents(){ return &m_renderingComponents; }
 

@@ -145,7 +145,16 @@ void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target
 	HR(hr);
 }
 
+<<<<<<< HEAD
 void Effect::PrepareVertexBuffer(RenderingComponent* rc, UINT& stride)
+=======
+void Effect::PrepareVertexBuffer(RenderingComponent* rc)
+{
+	m_inputLayout->PrepareVertexBuffer(rc);
+}
+
+void Effect::UpdateConstantBuffer(RenderingComponent* rc)
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 {
 	m_inputLayout->PrepareVertexBuffer(rc, stride);
 }
@@ -163,6 +172,16 @@ void Effect::UnBindShaderResource()
 void Effect::Start()
 {
 	m_inputLayout = new BasicLayout(m_vsBlob);
+<<<<<<< HEAD
+=======
+}
+
+void Effect::UpdateViewAndProjection(CameraComponent* cc)
+{
+	m_perObjConstantBuffer.View = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_view));
+	m_perObjConstantBuffer.Projection = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_proj));
+
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 }
 
 void Effect::BindEffect() {

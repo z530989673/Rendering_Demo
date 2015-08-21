@@ -16,8 +16,11 @@ protected:
 
 	virtual void PrepareGPUBuffer();
 public:
+<<<<<<< HEAD
 	bool isStatic = false;
 	UINT stride,offset = 0; // for vertexbuffer
+=======
+>>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 	ID3D11Buffer* m_indexBufferGPU;
 	ID3D11Buffer* m_VertexBufferGPU;
 
