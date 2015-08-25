@@ -34,11 +34,11 @@ struct PERCAMERA_CONSTANT_BUFFER
 
 struct PEROBJ_CONSTANT_BUFFER
 {
+	XMMATRIX World;
 	XMMATRIX WorldViewProj;
 	XMMATRIX WorldViewInvTranspose;
 	XMMATRIX WorldInvTranspose;
 	XMMATRIX WorldView;
-	XMMATRIX World;
 	Light	 Lights[8];
 };
 

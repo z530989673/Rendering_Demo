@@ -20,19 +20,19 @@ struct Light
 	float4 X_SpotAngleAndY_AttenuationAndZ_LightType;
 };
 
-cbuffer cbPerCamera : register(cb0) {
+cbuffer cbPerCamera : register(b0) {
 	matrix gView;
 	matrix gProjection; 
 	matrix gViewProj;
 	float4 EyePosition;
 }
 
-cbuffer cbPerObject : register(cb1) {
+cbuffer cbPerObject : register(b1) {
+	matrix gWorld;
 	matrix gWorldViewProj;
 	matrix gWorldViewInvTranspose;
 	matrix gWorldInvTranspose;
 	matrix gWorldView;
-	matrix gWorld;
 	Light	 Lights[8];
 };
 

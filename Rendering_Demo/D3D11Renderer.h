@@ -57,4 +57,9 @@ private:
 	PEROBJ_CONSTANT_BUFFER*		m_perObjCB;
 	ID3D11Buffer*				m_perCameraCBGPU;
 	ID3D11Buffer*				m_perObjCBGPU;
+
+	//temp, wirte your own matrix and vector class
+	XMFLOAT4X4*					m_world;
+	XMFLOAT4X4*					m_view;
+	XMFLOAT4X4*					m_proj;
 };

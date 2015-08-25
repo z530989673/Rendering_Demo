@@ -216,11 +216,13 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
 	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
 
-	m_perCameraCB->View = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_view));
-	m_perCameraCB->Projection = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_proj));
-	m_perCameraCB->EyePosition = cc->m_eyePos;
-	//m_perCameraCB->ViewProj = m_perCameraCB->View * m_perCameraCB->Projection;
+	m_view = &cc->m_view;
+	m_proj = &cc->m_proj;
 
+	m_perCameraCB->View = XMMatrixTranspose(XMLoadFloat4x4(m_view));
+	m_perCameraCB->Projection = XMMatrixTranspose(XMLoadFloat4x4(m_proj));
+	m_perCameraCB->EyePosition = cc->m_eyePos;
+	m_perCameraCB->ViewProj = XMMatrixTranspose(XMLoadFloat4x4(m_view) * XMLoadFloat4x4(m_proj));
 
 	D3D11_MAPPED_SUBRESOURCE ms;
 	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perCameraCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
@@ -230,7 +232,12 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 
 void D3D11Renderer::UpdatePerObjectCB(RenderingComponent* rc)
 {
-	m_perObjCB->World = XMMatrixTranspose(XMLoadFloat4x4(&rc->gameObject->GetWorldTransform()));
+	m_world = &rc->gameObject->GetWorldTransform();
+	m_perObjCB->World = XMMatrixTranspose(XMLoadFloat4x4(m_world));
+	m_perObjCB->WorldView = XMMatrixTranspose(XMLoadFloat4x4(m_world) * XMLoadFloat4x4(m_view));
+	m_perObjCB->WorldViewProj = XMMatrixTranspose(XMLoadFloat4x4(m_world) * XMLoadFloat4x4(m_view) * XMLoadFloat4x4(m_proj));
+	m_perObjCB->WorldInvTranspose = XMMatrixInverse(nullptr,XMLoadFloat4x4(m_world));
+	m_perObjCB->WorldViewInvTranspose = XMMatrixInverse(nullptr,XMLoadFloat4x4(m_world) * XMLoadFloat4x4(m_view));
 
 	D3D11_MAPPED_SUBRESOURCE ms;
 	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perObjCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
