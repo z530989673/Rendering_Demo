@@ -219,7 +219,7 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 	m_perCameraCB->View = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_view));
 	m_perCameraCB->Projection = XMMatrixTranspose(XMLoadFloat4x4(&cc->m_proj));
 	m_perCameraCB->EyePosition = cc->m_eyePos;
-	m_perCameraCB->ViewProj = m_perCameraCB->View * m_perCameraCB->Projection;
+	//m_perCameraCB->ViewProj = m_perCameraCB->View * m_perCameraCB->Projection;
 
 
 	D3D11_MAPPED_SUBRESOURCE ms;

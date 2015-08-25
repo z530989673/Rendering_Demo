@@ -42,16 +42,6 @@ struct SCREEN_VS_IN
     float2 Tex : TEXCOORD0;
 };
 
-<<<<<<< HEAD
-=======
-
-struct SCREEN_VS_IN
-{
-    float4 Pos : POSITION;
-    float2 Tex : TEXCOORD0;
-};
-
->>>>>>> 4c046093f0e972224c47fe76e93febecd3fdfb0f
 struct SCREEN_PS_IN
 {
     float4 Pos : SV_POSITION;
