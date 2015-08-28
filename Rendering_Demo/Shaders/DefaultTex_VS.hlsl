@@ -9,7 +9,7 @@ SCREEN_PS_IN main( SCREEN_VS_IN input )
     output.Pos = mul( input.Pos, gWorld );
     output.Pos = mul( output.Pos, gView );
     output.Pos = mul( output.Pos, gProjection );
-    output.Tex = input.Tex;
+    output.TexCoord = input.TexCoord;
     
     return output;
 }

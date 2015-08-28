@@ -33,21 +33,19 @@ protected:
 	Layout* m_inputLayout;
 	std::vector<RenderingComponent*> m_renderingComponents;
 
-	ID3D11Buffer* m_perObjectCB;
-	PERCAMERA_CONSTANT_BUFFER m_perObjConstantBuffer;
-
 	virtual void BindShaderResource() {}
 	virtual void UnBindShaderResource();
-	virtual void Start();   // create input Layout
 	void ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint = "main");
 
 public:
-	void PrepareVertexBuffer(RenderingComponent*,UINT&);
+	void PrepareVertexBuffer(RenderingComponent*, UINT&);
 	void AddRenderingComponent(RenderingComponent*);
+	void RemoveRenderingComponent(RenderingComponent*);
 	std::vector<RenderingComponent*>* GetRenderingComponents(){ return &m_renderingComponents; }
 
 	Effect(const std::wstring& vsPath,
 		const std::wstring& psPath,
+		Layout* inputLayout = nullptr,
 		const std::wstring& gsPath = L"",
 		const std::wstring& hsPath = L"",
 		const std::wstring& dsPath = L"",
@@ -61,6 +59,7 @@ private:
 	Effect();
 };
 
+// is default effect necessary?
 class DefaultEffect :
 	public Effect
 {

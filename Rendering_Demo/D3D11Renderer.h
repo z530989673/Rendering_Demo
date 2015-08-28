@@ -5,6 +5,7 @@
 #include <Engine/CameraManager.h>
 #include <Components/RenderingComponent.h>
 #include <Components/CameraComponent.h>
+#include <Components/LightComponent.h>
 #include <Engine/Game.h>
 
 #include <Basic/RenderTexture.h>
@@ -12,6 +13,7 @@
 class RenderTexture;
 class RenderingComponent;
 class CameraComponent;
+class LightComponent;
 
 
 class D3D11Renderer
@@ -36,6 +38,7 @@ public:
 	PEROBJ_CONSTANT_BUFFER* GetPerObjCB(){ return m_perObjCB; }
 
 	void UpdatePerCameraCB(CameraComponent*);
+	void UpdateLights(vector<LightComponent*>&);
 	void UpdatePerObjectCB(RenderingComponent*);
 
 private:

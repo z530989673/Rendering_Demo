@@ -3,9 +3,12 @@
 //--------------------------------------------------------------------------------------
 #include "common.fx"
 
-float4 main( float3 Pos : POSITION ) : SV_POSITION
+STANDARD_PS_IN main( STANDARD_VS_IN input)
 {
-	float4 output = float4(Pos, 1.0f);
-    output = mul( output, gWorldViewProj );
+	STANDARD_PS_IN output;
+    output.Pos = mul( float4(input.Pos, 1.0f), gWorldViewProj );
+    output.TexCoord = input.TexCoord;
+    output.Normal = input.Normal;
+	output.WorldPos = float4(input.Pos, 1.0f);
     return output;
 }

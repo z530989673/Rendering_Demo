@@ -7,6 +7,7 @@ Effect::Effect()
 
 Effect::Effect(const std::wstring& vsPath,
 	const std::wstring& psPath,
+	Layout* inputLayout,
 	const std::wstring& gsPath,
 	const std::wstring& hsPath,
 	const std::wstring& dsPath,
@@ -22,7 +23,8 @@ Effect::Effect(const std::wstring& vsPath,
 	m_gsBlob(0),
 	m_hsBlob(0),
 	m_dsBlob(0),
-	m_csBlob(0)
+	m_csBlob(0),
+	m_inputLayout(inputLayout)
 {
 	// Add error checking
 	HRESULT hr;
@@ -93,24 +95,10 @@ Effect::Effect(const std::wstring& vsPath,
 		HR(hr);
 	}
 
-	// Create the per object buffer.
-	D3D11_BUFFER_DESC cbDesc;
-	cbDesc.ByteWidth = sizeof(PERCAMERA_CONSTANT_BUFFER);
-	cbDesc.Usage = D3D11_USAGE_DYNAMIC;
-	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	cbDesc.MiscFlags = 0;
-	cbDesc.StructureByteStride = 0;
+	if (m_inputLayout == nullptr)
+		m_inputLayout = new StandardLayout();
 
-	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = &m_perObjConstantBuffer;
-	InitData.SysMemPitch = 0;
-	InitData.SysMemSlicePitch = 0;
-
-	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateBuffer(&cbDesc, &InitData,
-		&m_perObjectCB));
-
-	Start();
+	m_inputLayout->CreateLayout(m_vsBlob);
 }
 
 void Effect::AddRenderingComponent(RenderingComponent* rc)
@@ -119,6 +107,11 @@ void Effect::AddRenderingComponent(RenderingComponent* rc)
 	{
 		m_renderingComponents.push_back(rc);
 	}
+}
+
+void Effect::RemoveRenderingComponent(RenderingComponent* rc)
+{
+	m_renderingComponents.erase(std::remove(m_renderingComponents.begin(), m_renderingComponents.end(), rc), m_renderingComponents.end());
 }
 
 void Effect::ReadShaderFile(std::wstring filename, ID3DBlob **blob, char* target, char* entryPoint) {
@@ -160,11 +153,6 @@ void Effect::UnBindShaderResource()
 	D3D11Renderer::Instance()->GetD3DContext()->CSSetShaderResources(0, 0, nullptr);
 }
 
-void Effect::Start()
-{
-	m_inputLayout = new BasicLayout(m_vsBlob);
-}
-
 void Effect::BindEffect() {
 	//set shader
 	D3D11Renderer::Instance()->GetD3DContext()->VSSetShader(m_vertexShader, 0, 0);
@@ -177,7 +165,6 @@ void Effect::BindEffect() {
 	//set InputLayout
 	m_inputLayout->SetLayout();
 
-	//BindConstantBuffer();
 	BindShaderResource();
 }
 
@@ -190,7 +177,6 @@ void Effect::UnBindEffect() {
 	D3D11Renderer::Instance()->GetD3DContext()->DSSetShader(nullptr, 0, 0);
 	D3D11Renderer::Instance()->GetD3DContext()->CSSetShader(nullptr, 0, 0);
 
-	//UnBindConstantBuffer();
 	UnBindShaderResource();
 }
 
@@ -203,5 +189,4 @@ Effect::~Effect()
 	ReleaseCOM(m_domainShader);
 	ReleaseCOM(m_computeShader);
 	SafeDelete(m_inputLayout); 
-	ReleaseCOM(m_perObjectCB);
 }

@@ -5,5 +5,5 @@
 
 float4 main( SCREEN_PS_IN input) : SV_Target
 {
-    return gDiffuseMap.Sample( samLinear, input.Tex );
+    return gDiffuseMap.Sample( samLinear, input.TexCoord );
 }

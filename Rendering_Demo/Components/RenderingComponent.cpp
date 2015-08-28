@@ -16,7 +16,6 @@ void RenderingComponent::PrepareGPUBuffer()
 	iInitData.pSysMem = &m_indexBufferCPU[0];
 	HR(D3D11Renderer::Instance()->GetD3DDevice()->CreateBuffer(&ibd, &iInitData, &m_indexBufferGPU));
 
-	
 }
 
 void RenderingComponent::Draw()
@@ -27,6 +26,8 @@ void RenderingComponent::Draw()
 
 	D3D11Renderer::Instance()->GetD3DContext()->IASetIndexBuffer(m_indexBufferGPU, DXGI_FORMAT_R32_UINT, 0);
 
+	LightManager::Instance()->BindLights(this);
+
 	D3D11Renderer::Instance()->UpdatePerObjectCB(this);
 
 	D3D11Renderer::Instance()->GetD3DContext()->DrawIndexed(m_indexBufferCPU.size(), 0, 0);
@@ -35,47 +36,22 @@ void RenderingComponent::Draw()
 void RenderingComponent::Prepare()
 {
 	if (m_relatedEffect == NULL)
-		EffectManager::Instance()->AddToDefaultEffect(this);
+		EffectManager::Instance()->SetEffect(this, EffectManager::Instance()->defaultEffect);
 
 	PrepareGPUBuffer();
 }
 
+void RenderingComponent::SetEffect(Effect* eff)
+{
+	if (m_relatedEffect != nullptr){
+		m_relatedEffect->RemoveRenderingComponent(this);
+	}
+
+	m_relatedEffect = eff;
+}
+
 RenderingComponent::RenderingComponent()
 {
-	m_positionBufferCPU =
-	{
-		XMFLOAT3(-1.0f, 1.0f, -1.0f), 
-		XMFLOAT3(1.0f, 1.0f, -1.0f),
-		XMFLOAT3(1.0f, 1.0f, 1.0f),
-		XMFLOAT3(-1.0f, 1.0f, 1.0f),
-		XMFLOAT3(-1.0f, -1.0f, -1.0f),
-		XMFLOAT3(1.0f, -1.0f, -1.0f),
-		XMFLOAT3(1.0f, -1.0f, 1.0f),
-		XMFLOAT3(-1.0f, -1.0f, 1.0f),
-	};
-
-	m_indexBufferCPU =
-	{
-		3, 1, 0,
-		2, 1, 3,
-
-		0, 5, 4,
-		1, 5, 0,
-
-		3, 4, 7,
-		0, 4, 3,
-
-		1, 6, 5,
-		2, 6, 1,
-
-		2, 7, 6,
-		3, 7, 2,
-
-		6, 4, 5,
-		7, 4, 6,
-	};
-
-	EffectManager::Instance()->AddToDefaultEffect(this);
 }
 
 
@@ -83,4 +59,114 @@ RenderingComponent::~RenderingComponent()
 {
 	ReleaseCOM(m_indexBufferGPU);
 	ReleaseCOM(m_VertexBufferGPU);
+}
+
+
+RenderingComponent* RenderingComponent::CreateStandardBox()
+{
+	RenderingComponent* box = new RenderingComponent();
+
+	box->m_positionBufferCPU =
+	{
+		XMFLOAT3(-1.0f, 1.0f, -1.0f),
+		XMFLOAT3(1.0f, 1.0f, -1.0f),
+		XMFLOAT3(1.0f, 1.0f, 1.0f),
+		XMFLOAT3(-1.0f, 1.0f, 1.0f),
+		XMFLOAT3(-1.0f, -1.0f, -1.0f),
+		XMFLOAT3(1.0f, -1.0f, -1.0f),
+		XMFLOAT3(1.0f, -1.0f, 1.0f),
+		XMFLOAT3(-1.0f, -1.0f, 1.0f),
+		XMFLOAT3(-1.0f, -1.0f, 1.0f),
+		XMFLOAT3(-1.0f, -1.0f, -1.0f),
+		XMFLOAT3(-1.0f, 1.0f, -1.0f),
+		XMFLOAT3(-1.0f, 1.0f, 1.0f),
+		XMFLOAT3(1.0f, -1.0f, 1.0f),
+		XMFLOAT3(1.0f, -1.0f, -1.0f),
+		XMFLOAT3(1.0f, 1.0f, -1.0f),
+		XMFLOAT3(1.0f, 1.0f, 1.0f),
+		XMFLOAT3(-1.0f, -1.0f, -1.0f),
+		XMFLOAT3(1.0f, -1.0f, -1.0f),
+		XMFLOAT3(1.0f, 1.0f, -1.0f),
+		XMFLOAT3(-1.0f, 1.0f, -1.0f),
+		XMFLOAT3(-1.0f, -1.0f, 1.0f),
+		XMFLOAT3(1.0f, -1.0f, 1.0f),
+		XMFLOAT3(1.0f, 1.0f, 1.0f),
+		XMFLOAT3(-1.0f, 1.0f, 1.0f),
+	};
+
+	box->m_normalBufferCPU =
+	{
+		XMFLOAT3(0.0f, 1.0f, 0.0f),
+		XMFLOAT3(0.0f, 1.0f, 0.0f),
+		XMFLOAT3(0.0f, 1.0f, 0.0f),
+		XMFLOAT3(0.0f, 1.0f, 0.0f),
+		XMFLOAT3(0.0f, -1.0f, 0.0f),
+		XMFLOAT3(0.0f, -1.0f, 0.0f),
+		XMFLOAT3(0.0f, -1.0f, 0.0f),
+		XMFLOAT3(0.0f, -1.0f, 0.0f),
+		XMFLOAT3(-1.0f, 0.0f, 0.0f),
+		XMFLOAT3(-1.0f, 0.0f, 0.0f),
+		XMFLOAT3(-1.0f, 0.0f, 0.0f),
+		XMFLOAT3(-1.0f, 0.0f, 0.0f),
+		XMFLOAT3(1.0f, 0.0f, 0.0f),
+		XMFLOAT3(1.0f, 0.0f, 0.0f),
+		XMFLOAT3(1.0f, 0.0f, 0.0f),
+		XMFLOAT3(1.0f, 0.0f, 0.0f),
+		XMFLOAT3(0.0f, 0.0f, -1.0f),
+		XMFLOAT3(0.0f, 0.0f, -1.0f),
+		XMFLOAT3(0.0f, 0.0f, -1.0f),
+		XMFLOAT3(0.0f, 0.0f, -1.0f),
+		XMFLOAT3(0.0f, 0.0f, 1.0f),
+		XMFLOAT3(0.0f, 0.0f, 1.0f),
+		XMFLOAT3(0.0f, 0.0f, 1.0f),
+		XMFLOAT3(0.0f, 0.0f, 1.0f),
+	};
+
+	box->m_texCoordBufferCPU = 
+	{
+		XMFLOAT2(0.0f, 0.0f),
+		XMFLOAT2(1.0f, 0.0f),
+		XMFLOAT2(1.0f, 1.0f),
+		XMFLOAT2(0.0f, 1.0f),
+		XMFLOAT2(0.0f, 0.0f),
+		XMFLOAT2(1.0f, 0.0f),
+		XMFLOAT2(1.0f, 1.0f),
+		XMFLOAT2(0.0f, 1.0f),
+		XMFLOAT2(0.0f, 0.0f),
+		XMFLOAT2(1.0f, 0.0f),
+		XMFLOAT2(1.0f, 1.0f),
+		XMFLOAT2(0.0f, 1.0f),
+		XMFLOAT2(0.0f, 0.0f),
+		XMFLOAT2(1.0f, 0.0f),
+		XMFLOAT2(1.0f, 1.0f),
+		XMFLOAT2(0.0f, 1.0f),
+		XMFLOAT2(0.0f, 0.0f),
+		XMFLOAT2(1.0f, 0.0f),
+		XMFLOAT2(1.0f, 1.0f),
+		XMFLOAT2(0.0f, 1.0f),
+		XMFLOAT2(0.0f, 0.0f),
+		XMFLOAT2(1.0f, 0.0f),
+		XMFLOAT2(1.0f, 1.0f),
+		XMFLOAT2(0.0f, 1.0f),
+	};
+
+	box->m_indexBufferCPU =
+	{
+		3, 1, 0,
+		2, 1, 3,
+		6, 4, 5,
+		7, 4, 6,
+		11, 9, 8,
+		10, 9, 11,
+		14, 12, 13,
+		15, 12, 14,
+		19, 17, 16,
+		18, 17, 19,
+		22, 20, 21,
+		23, 20, 22
+	};
+
+	EffectManager::Instance()->SetEffect(box, EffectManager::Instance()->defaultEffect);
+
+	return box;
 }

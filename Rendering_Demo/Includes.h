@@ -7,6 +7,9 @@
 #include <DirectXMath.h>
 
 using namespace DirectX;
+using namespace std;
+
+#define MAX_LIGHT_NUM 8
 
 struct Light
 {
@@ -30,6 +33,7 @@ struct PERCAMERA_CONSTANT_BUFFER
 	XMMATRIX Projection;
 	XMMATRIX ViewProj;
 	XMVECTOR EyePosition;
+	XMVECTOR AmbientLightColor;
 };
 
 struct PEROBJ_CONSTANT_BUFFER
@@ -39,7 +43,7 @@ struct PEROBJ_CONSTANT_BUFFER
 	XMMATRIX WorldViewInvTranspose;
 	XMMATRIX WorldInvTranspose;
 	XMMATRIX WorldView;
-	Light	 Lights[8];
+	Light	 Lights[MAX_LIGHT_NUM];
 };
 
 

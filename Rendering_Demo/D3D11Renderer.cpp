@@ -224,10 +224,22 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 	m_perCameraCB->EyePosition = cc->m_eyePos;
 	m_perCameraCB->ViewProj = XMMatrixTranspose(XMLoadFloat4x4(m_view) * XMLoadFloat4x4(m_proj));
 
+	m_perCameraCB->AmbientLightColor = LightManager::Instance()->GetAmbientLightColor();
+
 	D3D11_MAPPED_SUBRESOURCE ms;
 	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perCameraCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 	memcpy(ms.pData, m_perCameraCB, sizeof(PERCAMERA_CONSTANT_BUFFER));
 	D3D11Renderer::Instance()->GetD3DContext()->Unmap(m_perCameraCBGPU, NULL);
+}
+
+void D3D11Renderer::UpdateLights(vector<LightComponent*>& lights)
+{
+	XMVECTOR zero = XMVectorSet(0, 0, 0, 0);
+	for (int i = 0; i < MAX_LIGHT_NUM; i++)
+		m_perObjCB->Lights[i].X_SpotAngleAndY_AttenuationAndZ_LightType = zero;
+
+	for (int i = 0; i < lights.size(); i++)
+		m_perObjCB->Lights[i] = lights[i]->GetLight();
 }
 
 void D3D11Renderer::UpdatePerObjectCB(RenderingComponent* rc)

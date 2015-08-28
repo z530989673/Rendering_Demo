@@ -12,6 +12,8 @@ Texture2D		gBlendMap		:	register(t7);
 
 SamplerState samLinear : register( s0 );
 
+#define MAX_LIGHT_NUM 8
+
 struct Light
 {
 	float4 Color;		//only xyz
@@ -25,6 +27,7 @@ cbuffer cbPerCamera : register(b0) {
 	matrix gProjection; 
 	matrix gViewProj;
 	float4 EyePosition;
+	float4 AmbientLightColor;
 }
 
 cbuffer cbPerObject : register(b1) {
@@ -33,19 +36,34 @@ cbuffer cbPerObject : register(b1) {
 	matrix gWorldViewInvTranspose;
 	matrix gWorldInvTranspose;
 	matrix gWorldView;
-	Light	 Lights[8];
+	Light	 Lights[MAX_LIGHT_NUM];
+};
+
+struct STANDARD_VS_IN
+{
+	float3 Pos		: POSITION;
+	float2 TexCoord : TEXCOORD0;
+	float3 Normal	: NORMAL0; 
+};
+
+struct STANDARD_PS_IN
+{
+	float4 Pos		: SV_POSITION;
+	float4 WorldPos : POSITION;
+	float3 Normal	: Normal0;
+	float2 TexCoord	: TEXCOORD0;
 };
 
 struct SCREEN_VS_IN
 {
-    float4 Pos : POSITION;
-    float2 Tex : TEXCOORD0;
+    float3 Pos : POSITION;
+    float2 TexCoord : TEXCOORD0;
 };
 
 struct SCREEN_PS_IN
 {
     float4 Pos : SV_POSITION;
-    float2 Tex : TEXCOORD0;
+    float2 TexCoord : TEXCOORD0;
 };
 
 

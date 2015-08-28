@@ -4,8 +4,7 @@
 #include <D3D11Renderer.h>
 #include "Engine/Effect.h"
 #include "Engine/EffectManager.h"
-
-using namespace DirectX;
+#include "Engine/LightManager.h"
 
 class Effect;
 
@@ -13,6 +12,7 @@ class RenderingComponent :
 	public Component
 {
 protected:
+	Effect* m_relatedEffect = nullptr;
 
 	virtual void PrepareGPUBuffer();
 public:
@@ -23,15 +23,15 @@ public:
 
 	std::vector<UINT> m_indexBufferCPU;
 	std::vector<XMFLOAT3> m_positionBufferCPU;
-	//std::vector<XMFLOAT3> m_normalBufferCPU;
-	//std::vector<XMFLOAT2> m_texUVBufferCPU;
+	std::vector<XMFLOAT3> m_normalBufferCPU;
+	std::vector<XMFLOAT2> m_texCoordBufferCPU;
 	//std::vector<XMFLOAT4> m_colorBufferCPU;
 	//std::vector<XMFLOAT3> m_tangentBufferCPU;
 
-	Effect* m_relatedEffect;
-
 	virtual void Draw();
 	void Prepare();
+	void SetEffect(Effect*);
+	static RenderingComponent* CreateStandardBox();
 
 	RenderingComponent();
 	~RenderingComponent();
