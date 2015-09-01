@@ -16,9 +16,9 @@ struct Light
 	enum LIGHTTYPE
 	{
 		None = 0,
-		Point = 1,
-		Spot = 2,
-		Directional = 3
+		Directional,
+		Point,
+		Spot,
 	};
 	XMVECTOR Color;
 	XMVECTOR Position;
