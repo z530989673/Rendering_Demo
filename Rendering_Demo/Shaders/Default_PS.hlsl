@@ -1,7 +1,7 @@
 //--------------------------------------------------------------------------------------
 // Default Pixel Shader
 //--------------------------------------------------------------------------------------
-#include "common.fx"
+#include "Common.fx"
 #include "LightHelper.fx"
 
 float4 main( STANDARD_PS_IN input) : SV_Target

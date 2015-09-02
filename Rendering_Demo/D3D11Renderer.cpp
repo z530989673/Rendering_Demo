@@ -221,10 +221,10 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 
 	m_perCameraCB->View = XMMatrixTranspose(XMLoadFloat4x4(m_view));
 	m_perCameraCB->Projection = XMMatrixTranspose(XMLoadFloat4x4(m_proj));
-	m_perCameraCB->EyePosition = cc->m_eyePos;
+	m_perCameraCB->EyePosition = XMLoadFloat4(&cc->m_eyePos);
 	m_perCameraCB->ViewProj = XMMatrixTranspose(XMLoadFloat4x4(m_view) * XMLoadFloat4x4(m_proj));
 
-	m_perCameraCB->AmbientLightColor = LightManager::Instance()->GetAmbientLightColor();
+	m_perCameraCB->AmbientLightColor = XMLoadFloat4(&LightManager::Instance()->GetAmbientLightColor());
 
 	D3D11_MAPPED_SUBRESOURCE ms;
 	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perCameraCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);

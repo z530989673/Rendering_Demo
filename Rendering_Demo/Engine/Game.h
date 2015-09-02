@@ -4,13 +4,17 @@
 
 #include "Includes.h"
 
+#include "Basic/Timer.h"
+
 #include "Objects/GameObject.h"
 #include "EffectManager.h"
 #include "CameraManager.h"
 #include "LightManager.h"
+#include "InputManager.h"
 #include "Components/RenderingComponent.h"
 #include "Components/CameraComponent.h"
 #include "Components/LightComponent.h"
+#include "Components/ControllerComponent.h"
 
 class D3D11Renderer;
 

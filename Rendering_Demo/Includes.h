@@ -72,4 +72,6 @@ struct PEROBJ_CONSTANT_BUFFER
 #ifndef HR
 #define HR(x) assert(SUCCEEDED(x))
 #endif
+#else
+#define HR(x) x
 #endif

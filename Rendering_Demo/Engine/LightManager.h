@@ -19,15 +19,15 @@ public:
 
 	GameObject* CreateLight(XMFLOAT4 pos, Light::LIGHTTYPE type, XMFLOAT4 dir, bool isCastingShadow = true, XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f }, float range = 100.0f, float spotAngle = XM_PIDIV2, float attenuation = 2);
 	void BindLights(RenderingComponent*);
-	void SetAmbientLightColor(float r, float g, float b){ m_ambientLightColor = XMVectorSet(r, g, b, 1.0f);  }
-	XMVECTOR& GetAmbientLightColor(){ return m_ambientLightColor; }
+	void SetAmbientLightColor(float r, float g, float b){ m_ambientLightColor = XMFLOAT4(r, g, b, 1.0f); }
+	XMFLOAT4& GetAmbientLightColor(){ return m_ambientLightColor; }
 
 	~LightManager();
 
 private:
 	static LightManager* m_instance;
 	vector<LightComponent*> m_lights;
-	XMVECTOR m_ambientLightColor;
+	XMFLOAT4 m_ambientLightColor;
 
 	LightManager();
 };

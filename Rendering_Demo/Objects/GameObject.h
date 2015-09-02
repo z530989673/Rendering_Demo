@@ -16,12 +16,22 @@ public:
 	//void RemoveComponent(Component*);
 	void AddChild(GameObject*);
 	void RemoveChild(GameObject*);
+	void SetParent(GameObject*);
 
 	XMFLOAT4 GetPos();
 	XMFLOAT4 GetUP();
 	XMFLOAT4 GetForward();
 	XMFLOAT4 GetRight();
 	XMFLOAT4X4 GetWorldTransform(){ return m_worldTransform;  }
+
+	void setPos(float x, float y, float z);
+
+	void MoveForward(float dis);
+	void MoveBackward(float dis);
+	void MoveRight(float dis);
+	void MoveLeft(float dis);
+	void MoveUp(float dis);
+	void MoveDown(float dis);
 
 	void Update();
 

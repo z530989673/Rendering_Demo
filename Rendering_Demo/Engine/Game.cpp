@@ -15,25 +15,31 @@ bool Game::InitGame(HINSTANCE hInst, HWND hWnd)
 
 void Game::Start()
 {
+	Timer::Start();
+	LightManager::Instance();
+
 	//temp for test
 
 	LightManager::Instance()->SetAmbientLightColor(0.9f, 0.9f, 0.9f);
 
-	// add a game object in the scene
+	// add a box in the scene
 	GameObject* go = new GameObject();
 	RenderingComponent* rc = RenderingComponent::CreateStandardBox();
 	rc->Prepare();
 	go->AddComponent(rc);
-	go->parent = GameObject::ROOTNODE;
+	go->SetParent(GameObject::ROOTNODE);
+	ControllerComponent* ctlc = new ControllerComponent();
+	go->AddComponent(ctlc);
+
 
 	//add a camera
 	GameObject* camera = new GameObject();
-	XMFLOAT4 pos = XMFLOAT4(2.0f, 2.0f, -2.0f, 0.0f);
+	XMFLOAT4 pos = XMFLOAT4(3.0f, 3.0f, -3.0f, 0.0f);
 	XMFLOAT4 target = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	XMFLOAT4 up = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
-	CameraComponent* cc = new CameraComponent(pos, target, up, XM_PIDIV2, 0.1, 100);
+	CameraComponent* cc = new CameraComponent(pos, target, up, XM_PI / 3, 0.1, 100);
 	camera->AddComponent(cc);
-	camera->parent = GameObject::ROOTNODE;
+	camera->SetParent(GameObject::ROOTNODE);
 	CameraManager::Instance()->SetMainCamera(cc);
 
 	// add a directional light
@@ -52,6 +58,8 @@ void Game::Start()
 
 void Game::Update()
 {
+	Timer::Update();
+	InputManager::Instance()->Update();
 	GameObject::ROOTNODE->Update();
 	renderer->Draw();
 }

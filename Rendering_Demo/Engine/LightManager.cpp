@@ -8,7 +8,7 @@ GameObject* LightManager::CreateLight(XMFLOAT4 pos, Light::LIGHTTYPE type, XMFLO
 	LightComponent* lc = new LightComponent(pos, type, dir, isCastingShadow, color, range, spotAngle, attenuation);
 
 	light->AddComponent(lc);
-	light->parent = GameObject::ROOTNODE;
+	light->SetParent(GameObject::ROOTNODE);
 
 	m_lights.push_back(lc);
 
