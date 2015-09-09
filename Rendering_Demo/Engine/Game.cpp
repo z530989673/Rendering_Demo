@@ -33,13 +33,11 @@ void Game::Start()
 
 
 	//add a camera
-	GameObject* camera = new GameObject();
 	XMFLOAT4 pos = XMFLOAT4(3.0f, 3.0f, -3.0f, 0.0f);
 	XMFLOAT4 target = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	XMFLOAT4 up = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
-	CameraComponent* cc = new CameraComponent(pos, target, up, XM_PI / 3, 0.1, 100);
-	camera->AddComponent(cc);
-	camera->SetParent(GameObject::ROOTNODE);
+	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / 3, 0.1, 100);
+	CameraComponent* cc = camera->GetComponent<CameraComponent>();
 	CameraManager::Instance()->SetMainCamera(cc);
 
 	// add a directional light

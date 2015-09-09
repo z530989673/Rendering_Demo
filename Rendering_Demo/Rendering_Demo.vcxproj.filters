@@ -21,12 +21,12 @@
     <ClCompile Include="Engine\Layout.cpp" />
     <ClCompile Include="Engine\LightManager.cpp" />
     <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Resources\FBXReader.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Engine\InputManager.cpp" />
     <ClCompile Include="Components\ControllerComponent.cpp" />
     <ClCompile Include="Basic\Timer.cpp" />
+    <ClCompile Include="Objects\GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic\RenderTexture.h" />
@@ -43,13 +43,13 @@
     <ClInclude Include="Engine\Layout.h" />
     <ClInclude Include="Engine\LightManager.h" />
     <ClInclude Include="Includes.h" />
-    <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources\FBXReader.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Engine\InputManager.h" />
     <ClInclude Include="Components\ControllerComponent.h" />
     <ClInclude Include="Basic\Timer.h" />
+    <ClInclude Include="Objects\GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RenderingDemo.rc" />

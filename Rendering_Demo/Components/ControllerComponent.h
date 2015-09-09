@@ -9,7 +9,8 @@ class ControllerComponent :
 	public Component
 {
 public:
-	float m_speed = 1.0f;
+	float m_moveSpeed = 1.0f;
+	float rotateSpeed = 0.4f;
 	void Update();
 	ControllerComponent();
 	~ControllerComponent();

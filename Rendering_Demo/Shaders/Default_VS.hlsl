@@ -8,7 +8,7 @@ STANDARD_PS_IN main( STANDARD_VS_IN input)
 	STANDARD_PS_IN output;
     output.Pos = mul( float4(input.Pos, 1.0f), gWorldViewProj );
     output.TexCoord = input.TexCoord;
-    output.Normal = input.Normal;
+    output.Normal = mul(float4(input.Normal,0.0f), gWorldInvTranspose).xyz;
 	output.WorldPos = mul( float4(input.Pos, 1.0f), gWorld);
     return output;
 }

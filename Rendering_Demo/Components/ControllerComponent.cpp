@@ -4,19 +4,35 @@ void ControllerComponent::Update()
 {
 	if (InputManager::Instance()->GetKeyHold('W'))
 	{
-		gameObject->MoveForward(m_speed * Timer::GetDeltaTime());
+		gameObject->MoveForward(m_moveSpeed * Timer::GetDeltaTime());
 	}
 	if (InputManager::Instance()->GetKeyHold('S'))
 	{
-		gameObject->MoveBackward(m_speed * Timer::GetDeltaTime());
+		gameObject->MoveBackward(m_moveSpeed * Timer::GetDeltaTime());
 	}
 	if (InputManager::Instance()->GetKeyHold('A'))
 	{
-		gameObject->MoveLeft(m_speed * Timer::GetDeltaTime());
+		gameObject->MoveLeft(m_moveSpeed * Timer::GetDeltaTime());
 	}
 	if (InputManager::Instance()->GetKeyHold('D'))
 	{
-		gameObject->MoveRight(m_speed * Timer::GetDeltaTime());
+		gameObject->MoveRight(m_moveSpeed * Timer::GetDeltaTime());
+	}
+	if (InputManager::Instance()->GetKeyHold(VK_UP))
+	{
+		gameObject->RotateX(-m_moveSpeed * Timer::GetDeltaTime());
+	}
+	if (InputManager::Instance()->GetKeyHold(VK_DOWN))
+	{
+		gameObject->RotateX(m_moveSpeed * Timer::GetDeltaTime());
+	}
+	if (InputManager::Instance()->GetKeyHold(VK_LEFT))
+	{
+		gameObject->RotateY(-m_moveSpeed * Timer::GetDeltaTime());
+	}
+	if (InputManager::Instance()->GetKeyHold(VK_RIGHT))
+	{
+		gameObject->RotateY(m_moveSpeed * Timer::GetDeltaTime());
 	}
 }
 

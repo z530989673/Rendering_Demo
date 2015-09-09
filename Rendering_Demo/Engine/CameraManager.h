@@ -1,5 +1,6 @@
 #pragma once
 #include "Components/CameraComponent.h"
+#include "Objects/GameObject.h"
 #include "Includes.h"
 
 class CameraComponent;
@@ -14,6 +15,7 @@ public:
 	}
 
 	void SetMainCamera(CameraComponent*);
+	GameObject* CreateCamera(XMFLOAT4 pos, XMFLOAT4 target, XMFLOAT4 up, float fov, float np, float fp);
 	CameraComponent* GetMainCamera();
 	std::vector<CameraComponent*>* getAllCameras(){ return &m_cameras; }
 

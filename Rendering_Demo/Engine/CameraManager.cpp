@@ -2,6 +2,15 @@
 
 CameraManager* CameraManager::m_instance = nullptr;
 
+GameObject* CameraManager::CreateCamera(XMFLOAT4 pos, XMFLOAT4 target, XMFLOAT4 up, float fov, float np, float fp)
+{
+	GameObject* camera = new GameObject();
+	CameraComponent* cc = new CameraComponent(pos, target, up, fov, np, fp);
+	camera->AddComponent(cc);
+	camera->SetParent(GameObject::ROOTNODE);
+
+	return camera;
+}
 
 void CameraManager::SetMainCamera(CameraComponent* cc)
 {

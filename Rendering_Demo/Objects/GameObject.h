@@ -13,6 +13,19 @@ public:
 	std::vector<GameObject*> children;
 
 	void AddComponent(Component*);
+
+	template<typename T>
+	inline T* GetComponent()
+	{
+		for (Component* c : m_components)
+		{
+			if (typeid(T) == typeid(*c))
+				return (T*)c;
+		}
+
+		return nullptr;
+	}
+
 	//void RemoveComponent(Component*);
 	void AddChild(GameObject*);
 	void RemoveChild(GameObject*);
@@ -22,7 +35,7 @@ public:
 	XMFLOAT4 GetUP();
 	XMFLOAT4 GetForward();
 	XMFLOAT4 GetRight();
-	XMFLOAT4X4 GetWorldTransform(){ return m_worldTransform;  }
+	XMFLOAT4X4 GetWorldTransform(){ return m_worldTransform; }
 
 	void setPos(float x, float y, float z);
 
@@ -32,6 +45,9 @@ public:
 	void MoveLeft(float dis);
 	void MoveUp(float dis);
 	void MoveDown(float dis);
+	void RotateX(float angle);
+	void RotateY(float angle);
+	void RotateZ(float angle);
 
 	void Update();
 

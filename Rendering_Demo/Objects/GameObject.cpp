@@ -29,6 +29,24 @@ XMFLOAT4 GameObject::GetRight()
 	return XMFLOAT4(&m_worldTransform.m[0][0]);
 }
 
+void GameObject::RotateX(float angle)
+{
+	XMMATRIX M = XMMatrixRotationX(angle) * XMLoadFloat4x4(&m_worldTransform);
+	XMStoreFloat4x4(&m_worldTransform, M);
+}
+
+void GameObject::RotateY(float angle)
+{
+	XMMATRIX M = XMMatrixRotationY(angle) * XMLoadFloat4x4(&m_worldTransform);
+	XMStoreFloat4x4(&m_worldTransform, M);
+}
+
+void GameObject::RotateZ(float angle)
+{
+	XMMATRIX M = XMMatrixRotationZ(angle) * XMLoadFloat4x4(&m_worldTransform);
+	XMStoreFloat4x4(&m_worldTransform, M);
+}
+
 void GameObject::MoveForward(float dis)
 {
 	for (int i = 0; i < 3; i++)

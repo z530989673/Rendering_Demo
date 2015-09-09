@@ -26,7 +26,6 @@ void Timer::Update() {
 	double time = GetTime();
 	m_deltaTime = time - m_lastUpdateTime;
 	m_lastUpdateTime = time;
-
 }
 
 Timer::~Timer(){
