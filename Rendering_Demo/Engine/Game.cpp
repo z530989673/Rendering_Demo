@@ -28,8 +28,6 @@ void Game::Start()
 	rc->Prepare();
 	go->AddComponent(rc);
 	go->SetParent(GameObject::ROOTNODE);
-	ControllerComponent* ctlc = new ControllerComponent();
-	go->AddComponent(ctlc);
 
 
 	//add a camera
@@ -39,6 +37,8 @@ void Game::Start()
 	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / 3, 0.1, 100);
 	CameraComponent* cc = camera->GetComponent<CameraComponent>();
 	CameraManager::Instance()->SetMainCamera(cc);
+	ControllerComponent* ctlc = new ControllerComponent();
+	camera->AddComponent(ctlc);
 
 	// add a directional light
 	XMFLOAT4 lightPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);

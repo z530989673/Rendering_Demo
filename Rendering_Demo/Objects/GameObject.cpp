@@ -2,11 +2,16 @@
 
 GameObject* GameObject::ROOTNODE = new GameObject();
 
-void GameObject::setPos(float x, float y, float z)
+void GameObject::SetPos(float x, float y, float z)
 {
 	m_worldTransform.m[3][0] = x;
 	m_worldTransform.m[3][1] = y;
 	m_worldTransform.m[3][2] = z;
+}
+
+void GameObject::SetWorldMatrix(XMMATRIX& mat)
+{
+	XMStoreFloat4x4(&m_worldTransform, mat);
 }
 
 XMFLOAT4 GameObject::GetPos()
@@ -131,6 +136,16 @@ GameObject::GameObject()
 	XMStoreFloat4x4(&m_worldTransform, XMMatrixIdentity());
 }
 
+GameObject::GameObject(float posX, float posY, float posZ)
+{
+	XMStoreFloat4x4(&m_worldTransform, XMMatrixIdentity());
+	SetPos(posX, posY, posZ);
+}
+
+GameObject::GameObject(XMMATRIX& mat)
+{
+	XMStoreFloat4x4(&m_worldTransform, mat);
+}
 
 GameObject::~GameObject()
 {

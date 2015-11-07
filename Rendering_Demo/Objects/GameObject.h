@@ -37,7 +37,8 @@ public:
 	XMFLOAT4 GetRight();
 	XMFLOAT4X4 GetWorldTransform(){ return m_worldTransform; }
 
-	void setPos(float x, float y, float z);
+	void SetPos(float x, float y, float z);
+	void SetWorldMatrix(XMMATRIX& mat);
 
 	void MoveForward(float dis);
 	void MoveBackward(float dis);
@@ -52,6 +53,8 @@ public:
 	void Update();
 
 	GameObject();
+	GameObject(float posX, float posY, float posZ);
+	GameObject(XMMATRIX& mat);
 	~GameObject();
 
 	void setEnabled(bool e){ m_enabled = e; }
