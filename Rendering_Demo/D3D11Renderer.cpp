@@ -3,7 +3,7 @@
 D3D11Renderer* D3D11Renderer::_instance = nullptr;
 
 // Create Direct3D device and swap chain
-HRESULT D3D11Renderer::Init(HWND g_hWnd)
+bool D3D11Renderer::Init(HWND g_hWnd)
 {
 	HRESULT hr = S_OK;
 
@@ -13,9 +13,6 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 	m_aspectRatio = width / (float)height;
 
 	UINT createDeviceFlags = 0;
-#ifdef _DEBUG
-	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
 
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
@@ -56,7 +53,7 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 			break;
 	}
 	if (FAILED(hr))
-		return hr;
+		return false;
 
 	// Create a render target view
 	ID3D11Texture2D* pBackBuffer = NULL;
@@ -155,7 +152,7 @@ HRESULT D3D11Renderer::Init(HWND g_hWnd)
 	m_pDeviceContext->VSSetConstantBuffers(1, 1, &m_perObjCBGPU);
 	m_pDeviceContext->PSSetConstantBuffers(1, 1, &m_perObjCBGPU);
 
-	return S_OK;
+	return true;
 }
 
 // Clean up the objects we've created
@@ -238,7 +235,7 @@ void D3D11Renderer::UpdateLights(vector<LightComponent*>& lights)
 	for (int i = 0; i < MAX_LIGHT_NUM; i++)
 		m_perObjCB->Lights[i].X_SpotAngleAndY_AttenuationAndZ_LightType = zero;
 
-	for (int i = 0; i < lights.size(); i++)
+	for (int i = 0; i < (int)lights.size(); i++)
 		m_perObjCB->Lights[i] = lights[i]->GetLight();
 }
 

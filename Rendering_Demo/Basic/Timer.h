@@ -17,7 +17,7 @@ public:
 	static void Start();
 	static double GetTime();
 	static double GetTimeSinceGameStart();
-	static double GetDeltaTime() { return m_deltaTime; }
+	static float GetDeltaTime() { return (float)m_deltaTime; }
 	static void Update();
 };
 

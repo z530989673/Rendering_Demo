@@ -11,7 +11,7 @@ using namespace std;
 
 #define MAX_LIGHT_NUM 8
 
-struct Light
+__declspec(align(16)) struct Light
 {
 	enum LIGHTTYPE
 	{
@@ -27,7 +27,7 @@ struct Light
 };
 
 
-struct PERCAMERA_CONSTANT_BUFFER
+__declspec(align(16)) struct PERCAMERA_CONSTANT_BUFFER
 {
 	XMMATRIX View;
 	XMMATRIX Projection;
@@ -36,7 +36,7 @@ struct PERCAMERA_CONSTANT_BUFFER
 	XMVECTOR AmbientLightColor;
 };
 
-struct PEROBJ_CONSTANT_BUFFER
+__declspec(align(16)) struct PEROBJ_CONSTANT_BUFFER
 {
 	XMMATRIX World;
 	XMMATRIX WorldViewProj;

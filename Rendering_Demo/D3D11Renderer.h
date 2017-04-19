@@ -28,7 +28,7 @@ public:
 	~D3D11Renderer();
 
 	void Draw();
-	HRESULT Init(HWND g_hWnd);
+	bool Init(HWND g_hWnd);
 	void CleanupDevice();
 
 	ID3D11Device* GetD3DDevice() { return m_pd3dDevice; }

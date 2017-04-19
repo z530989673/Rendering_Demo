@@ -34,7 +34,7 @@ void Game::Start()
 	XMFLOAT4 pos = XMFLOAT4(3.0f, 3.0f, -3.0f, 0.0f);
 	XMFLOAT4 target = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	XMFLOAT4 up = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
-	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / 3, 0.1, 100);
+	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / 2, 0.1f, 100);
 	CameraComponent* cc = camera->GetComponent<CameraComponent>();
 	CameraManager::Instance()->SetMainCamera(cc);
 	ControllerComponent* ctlc = new ControllerComponent();
@@ -44,14 +44,14 @@ void Game::Start()
 	XMFLOAT4 lightPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	Light::LIGHTTYPE lightType = Light::LIGHTTYPE::Directional;
 	XMFLOAT4 lightDir = XMFLOAT4(-2.0f, -1.0f, -1.0f, 0.0f);
-	GameObject* light = LightManager::Instance()->CreateLight(lightPos, lightType, lightDir);
+	LightManager::Instance()->CreateLight(lightPos, lightType, lightDir);
 
 	// add a spot light
 	XMFLOAT4 spotLightPos = XMFLOAT4(-0.0f, 1.5f, -1.6f, 0.0f);
 	Light::LIGHTTYPE spotLightType = Light::LIGHTTYPE::Point;
 	XMFLOAT4 spotLightDir = XMFLOAT4(-2.0f, -1.0f, -1.0f, 0.0f);
 	XMFLOAT4 spotLightColor = XMFLOAT4(3.0f, 3.0f, 0.0f, 0.0f);
-	GameObject* spotLight = LightManager::Instance()->CreateLight(spotLightPos, spotLightType, spotLightDir, true, spotLightColor);
+	LightManager::Instance()->CreateLight(spotLightPos, spotLightType, spotLightDir, true, spotLightColor);
 }
 
 void Game::Update()

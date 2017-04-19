@@ -10,7 +10,7 @@
 #include "Engine/Game.h"
 #include "Engine/EffectManager.h"
 
-#include "Debugging/Debug.h";
+#include "Debugging/Debug.h"
 
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -20,8 +20,8 @@
 
 HINSTANCE               g_hInst = NULL;
 HWND                    g_hWnd = NULL;
-UINT					g_wndWidth = 1024;
-UINT					g_wndHeight = 700;
+INT						g_wndWidth = 1024;
+INT						g_wndHeight = 700;
 TCHAR					g_WindowTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR					g_windowClass[MAX_LOADSTRING];			// the main window class name
 
@@ -76,7 +76,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	wprintf(L"window class: %s successfully created, titled : %s.\n", g_windowClass, g_WindowTitle);
 #endif
 
-	if (FAILED(Game::Instance()->InitGame(g_hInst, g_hWnd)))
+	if (!Game::Instance()->InitGame(g_hInst, g_hWnd))
     {
 		Game::Instance()->ExitGame();
         return 0;

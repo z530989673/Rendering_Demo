@@ -68,7 +68,7 @@ void StandardLayout::CreateLayout(ID3DBlob *vsBlob)
 	UINT numElements = ARRAYSIZE(layout);
 
 	// Create the input layout
-	HRESULT hr = D3D11Renderer::Instance()->GetD3DDevice()->CreateInputLayout(layout, numElements, vsBlob->GetBufferPointer(),
+	D3D11Renderer::Instance()->GetD3DDevice()->CreateInputLayout(layout, numElements, vsBlob->GetBufferPointer(),
 		vsBlob->GetBufferSize(), &m_inputLayout);
 }
 
