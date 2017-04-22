@@ -15,6 +15,7 @@ using namespace mathfu;
 
 #define MAX_LIGHT_NUM 8
 
+#define Vector2 Vector<float, 2>
 #define Vector3 Vector<float, 3>
 #define Vector4 Vector<float, 4>
 #define Matrix4x4 Matrix<float, 4, 4>

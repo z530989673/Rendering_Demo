@@ -32,13 +32,13 @@ void BasicLayout::CreateLayout(ID3DBlob *vsBlob)
 
 void BasicLayout::PrepareVertexBuffer(RenderingComponent* rc, UINT& stride)
 {
-	stride = sizeof(XMFLOAT3);
+	stride = sizeof(Vector3);
 
 	//create vertex buffer
 	D3D11_BUFFER_DESC vbd;
 	ZeroMemory(&vbd, sizeof(vbd));
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = stride * rc->m_positionBufferCPU.size();
+	vbd.ByteWidth = stride * (UINT)rc->m_positionBufferCPU.size();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA vInitData;
@@ -87,7 +87,7 @@ void StandardLayout::PrepareVertexBuffer(RenderingComponent* rc, UINT& stride)
 	D3D11_BUFFER_DESC vbd;
 	ZeroMemory(&vbd, sizeof(vbd));
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = stride * rc->m_positionBufferCPU.size();
+	vbd.ByteWidth = stride * (UINT)rc->m_positionBufferCPU.size();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA vInitData;

@@ -41,9 +41,9 @@ cbuffer cbPerObject : register(b1) {
 
 struct STANDARD_VS_IN
 {
-	float3 Pos		: POSITION;
+	float4 Pos		: POSITION;
 	float2 TexCoord : TEXCOORD0;
-	float3 Normal	: NORMAL0; 
+	float4 Normal	: NORMAL0; 
 };
 
 struct STANDARD_PS_IN
@@ -56,7 +56,7 @@ struct STANDARD_PS_IN
 
 struct SCREEN_VS_IN
 {
-    float3 Pos : POSITION;
+    float4 Pos : POSITION;
     float2 TexCoord : TEXCOORD0;
 };
 

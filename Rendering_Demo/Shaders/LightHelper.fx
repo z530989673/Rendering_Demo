@@ -7,7 +7,7 @@ float3 GetLightDirection(Light l, float4 surfacePos)
 	if (lightType > 0.9 && lightType < 1.1)
 		return normalize(-l.Direction.xyz);
 	else 
-		return normalize(l.Position - surfacePos);
+		return normalize(l.Position - surfacePos).xyz;
 }
 
 float4 GetLightIntensity(Light l, float4 surfacePos)

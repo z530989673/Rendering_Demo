@@ -15,3 +15,14 @@ Debug
 /x64/Release/*.iobj
 /x64/Release/*.ipdb
 /x64/Release/*.pdb
+/Release/*.cso
+/Release/*.exe
+/Release/*.iobj
+/Release/*.ipdb
+/Release/*.pdb
+/Rendering_Demo/Release/*.obj
+/Rendering_Demo/Release/*.res
+/Rendering_Demo/Release/*.log
+/Rendering_Demo/Release/Rendering_Demo.tlog/*.tlog
+/Rendering_Demo/Release/Rendering_Demo.tlog/*.lastbuildstate
+/Rendering_Demo/Release/*.pdb

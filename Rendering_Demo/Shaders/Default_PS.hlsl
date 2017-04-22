@@ -11,7 +11,7 @@ float4 main( STANDARD_PS_IN input) : SV_Target
 	output += AmbientLightColor * float4(0.2, 0.2, 0.2, 0.0);
 
 	float3 N = normalize(input.Normal);
-	float3 V = normalize(EyePosition - input.WorldPos);
+	float3 V = normalize(EyePosition - input.WorldPos).xyz;
 
 	for(int i =0; i < MAX_LIGHT_NUM; i++)
 	{

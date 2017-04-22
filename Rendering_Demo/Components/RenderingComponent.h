@@ -22,11 +22,11 @@ public:
 	ID3D11Buffer* m_VertexBufferGPU;
 
 	std::vector<UINT> m_indexBufferCPU;
-	std::vector<XMFLOAT3> m_positionBufferCPU;
-	std::vector<XMFLOAT3> m_normalBufferCPU;
-	std::vector<XMFLOAT2> m_texCoordBufferCPU;
-	//std::vector<XMFLOAT4> m_colorBufferCPU;
-	//std::vector<XMFLOAT3> m_tangentBufferCPU;
+	std::vector<Vector3> m_positionBufferCPU;
+	std::vector<Vector3> m_normalBufferCPU;
+	std::vector<Vector2> m_texCoordBufferCPU;
+	//std::vector<Vector4> m_colorBufferCPU;
+	//std::vector<Vector3> m_tangentBufferCPU;
 
 	virtual void Draw();
 	void Prepare();

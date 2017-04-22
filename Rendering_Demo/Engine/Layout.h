@@ -33,9 +33,9 @@ class StandardLayout :
 {
 	struct Vertex
 	{
-		XMFLOAT3 pos;
-		XMFLOAT2 texCoord;
-		XMFLOAT3 normal;
+		Vector3 pos;
+		Vector2 texCoord;
+		Vector3 normal;
 	};
 public:
 	StandardLayout();
