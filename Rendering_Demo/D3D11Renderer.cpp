@@ -213,15 +213,15 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 	m_pDeviceContext->VSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
 	m_pDeviceContext->PSSetConstantBuffers(0, 1, &m_perCameraCBGPU);
 
-	m_view = &cc->m_view;
-	m_proj = &cc->m_proj;
+	m_view = cc->m_view;
+	m_proj = cc->m_proj;
 
-	m_perCameraCB->View = XMMatrixTranspose(XMLoadFloat4x4(m_view));
-	m_perCameraCB->Projection = XMMatrixTranspose(XMLoadFloat4x4(m_proj));
-	m_perCameraCB->EyePosition = XMLoadFloat4(&cc->m_eyePos);
-	m_perCameraCB->ViewProj = XMMatrixTranspose(XMLoadFloat4x4(m_view) * XMLoadFloat4x4(m_proj));
+	m_perCameraCB->View = m_view.Transpose();
+	m_perCameraCB->Projection = m_proj.Transpose();
+	m_perCameraCB->EyePosition = Vector4(cc->m_eyePos, 0);
+	m_perCameraCB->ViewProj = (m_proj * m_view).Transpose();
 
-	m_perCameraCB->AmbientLightColor = XMLoadFloat4(&LightManager::Instance()->GetAmbientLightColor());
+	m_perCameraCB->AmbientLightColor = LightManager::Instance()->GetAmbientLightColor();
 
 	D3D11_MAPPED_SUBRESOURCE ms;
 	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perCameraCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
@@ -231,7 +231,7 @@ void D3D11Renderer::UpdatePerCameraCB(CameraComponent* cc)
 
 void D3D11Renderer::UpdateLights(vector<LightComponent*>& lights)
 {
-	XMVECTOR zero = XMVectorSet(0, 0, 0, 0);
+	Vector4 zero = Vector4(0,0,0,0);
 	for (int i = 0; i < MAX_LIGHT_NUM; i++)
 		m_perObjCB->Lights[i].X_SpotAngleAndY_AttenuationAndZ_LightType = zero;
 
@@ -241,12 +241,12 @@ void D3D11Renderer::UpdateLights(vector<LightComponent*>& lights)
 
 void D3D11Renderer::UpdatePerObjectCB(RenderingComponent* rc)
 {
-	m_world = &rc->gameObject->GetWorldTransform();
-	m_perObjCB->World = XMMatrixTranspose(XMLoadFloat4x4(m_world));
-	m_perObjCB->WorldView = XMMatrixTranspose(XMLoadFloat4x4(m_world) * XMLoadFloat4x4(m_view));
-	m_perObjCB->WorldViewProj = XMMatrixTranspose(XMLoadFloat4x4(m_world) * XMLoadFloat4x4(m_view) * XMLoadFloat4x4(m_proj));
-	m_perObjCB->WorldInvTranspose = XMMatrixInverse(nullptr,XMLoadFloat4x4(m_world));
-	m_perObjCB->WorldViewInvTranspose = XMMatrixInverse(nullptr,XMLoadFloat4x4(m_world) * XMLoadFloat4x4(m_view));
+	m_world = rc->gameObject->GetWorldTransform();
+	m_perObjCB->World = m_world.Transpose();
+	m_perObjCB->WorldView = (m_view * m_world).Transpose();
+	m_perObjCB->WorldViewProj = (m_proj * (m_view * m_world)).Transpose();
+	m_perObjCB->WorldInvTranspose = m_world.Inverse();
+	m_perObjCB->WorldViewInvTranspose = (m_view * m_world).Inverse();
 
 	D3D11_MAPPED_SUBRESOURCE ms;
 	D3D11Renderer::Instance()->GetD3DContext()->Map(m_perObjCBGPU, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);

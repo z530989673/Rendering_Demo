@@ -2,7 +2,7 @@
 
 LightManager* LightManager::m_instance = nullptr;
 
-GameObject* LightManager::CreateLight(XMFLOAT4 pos, Light::LIGHTTYPE type, XMFLOAT4 dir, bool isCastingShadow, XMFLOAT4 color, float range, float spotAngle, float attenuation)
+GameObject* LightManager::CreateLight(Vector4 pos, Light::LIGHTTYPE type, Vector4 dir, bool isCastingShadow, Vector4 color, float range, float spotAngle, float attenuation)
 {
 	GameObject* light = new GameObject();
 	LightComponent* lc = new LightComponent(pos, type, dir, isCastingShadow, color, range, spotAngle, attenuation);

@@ -70,7 +70,7 @@
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\ThrirdParty\mathfu\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,8 +78,8 @@
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <IncludePath>$(ProjectDir)\ThrirdParty\mathfu\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -205,6 +205,45 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources\FBXReader.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\config.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\mat4f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd2f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd2f_common.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd2f_neon.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4f_common.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4f_gnu.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4f_neon.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4f_scalar.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4f_sse.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4x4f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4x4f_gnu.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4x4f_neon.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4x4f_scalar.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\simd4x4f_sse.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\vec2f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\vec3f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\vec4f.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\vectorial.h" />
+    <ClInclude Include="ThrirdParty\mathfu\dependencies\vectorial\include\vectorial\vec_convert.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\constants.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\glsl_mappings.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\hlsl_mappings.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\disable_warnings_begin.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\disable_warnings_end.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\matrix_4x4_simd.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\vector_2.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\vector_2_simd.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\vector_3.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\vector_3_simd.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\vector_4.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\internal\vector_4_simd.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\matrix.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\matrix_4x4.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\quaternion.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\rect.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\utilities.h" />
+    <ClInclude Include="ThrirdParty\mathfu\include\mathfu\vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RenderingDemo.rc" />

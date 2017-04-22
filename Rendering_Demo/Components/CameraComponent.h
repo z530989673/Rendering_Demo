@@ -10,12 +10,12 @@ class CameraComponent :
 	public Component
 {
 public:
-	XMFLOAT4X4	m_proj;
-	XMFLOAT4X4	m_view;
-	XMFLOAT4	m_eyePos;
+	Matrix4x4	m_proj;
+	Matrix4x4	m_view;
+	Vector3	m_eyePos;
 	CameraComponent();
-	CameraComponent(XMFLOAT4 pos, XMFLOAT4 target, XMFLOAT4 up, float fov, float np, float fp);
-	CameraComponent(XMMATRIX& view, float fov, float np, float fp);
+	CameraComponent(Vector3 pos, Vector3 target, Vector3 up, float fov, float np, float fp);
+	CameraComponent(Matrix4x4& view, float fov, float np, float fp);
 	RenderTexture* GetRenderTarget(){ return m_renderTarget; }
 	void setRenderTarget(RenderTexture* value){ m_renderTarget = value; }
 	void Bind();

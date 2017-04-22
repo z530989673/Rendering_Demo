@@ -6,12 +6,20 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+#include "mathfu/vector.h"
+#include "mathfu/matrix.h"
+
 using namespace DirectX;
 using namespace std;
+using namespace mathfu;
 
 #define MAX_LIGHT_NUM 8
 
-__declspec(align(16)) struct Light
+#define Vector3 Vector<float, 3>
+#define Vector4 Vector<float, 4>
+#define Matrix4x4 Matrix<float, 4, 4>
+
+struct Light
 {
 	enum LIGHTTYPE
 	{
@@ -20,29 +28,29 @@ __declspec(align(16)) struct Light
 		Point,
 		Spot,
 	};
-	XMVECTOR Color;
-	XMVECTOR Position;
-	XMVECTOR Direction;
-	XMVECTOR X_SpotAngleAndY_AttenuationAndZ_LightType;
+	Vector4 Color;
+	Vector4 Position;
+	Vector4 Direction;
+	Vector4 X_SpotAngleAndY_AttenuationAndZ_LightType;
 };
 
 
-__declspec(align(16)) struct PERCAMERA_CONSTANT_BUFFER
+struct PERCAMERA_CONSTANT_BUFFER
 {
-	XMMATRIX View;
-	XMMATRIX Projection;
-	XMMATRIX ViewProj;
-	XMVECTOR EyePosition;
-	XMVECTOR AmbientLightColor;
+	Matrix4x4 View;
+	Matrix4x4 Projection;
+	Matrix4x4 ViewProj;
+	Vector4 EyePosition;
+	Vector4 AmbientLightColor;
 };
 
-__declspec(align(16)) struct PEROBJ_CONSTANT_BUFFER
+struct PEROBJ_CONSTANT_BUFFER
 {
-	XMMATRIX World;
-	XMMATRIX WorldViewProj;
-	XMMATRIX WorldViewInvTranspose;
-	XMMATRIX WorldInvTranspose;
-	XMMATRIX WorldView;
+	Matrix4x4 World;
+	Matrix4x4 WorldViewProj;
+	Matrix4x4 WorldViewInvTranspose;
+	Matrix4x4 WorldInvTranspose;
+	Matrix4x4 WorldView;
 	Light	 Lights[MAX_LIGHT_NUM];
 };
 

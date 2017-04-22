@@ -7,15 +7,15 @@ bool LightComponent::CheckIfWithinRange(RenderingComponent* rc)
 	return true;
 }
 
-LightComponent::LightComponent(XMFLOAT4 pos, Light::LIGHTTYPE type, XMFLOAT4 dir, bool isCastingShadow, XMFLOAT4 color, float range, float spotAngle, float attenuation) :
+LightComponent::LightComponent(Vector4 pos, Light::LIGHTTYPE type, Vector4 dir, bool isCastingShadow, Vector4 color, float range, float spotAngle, float attenuation) :
 m_range(range),
 m_isCastingShadow(isCastingShadow)
 {
-	m_light.Position = XMLoadFloat4(&pos);
-	m_light.Color = XMLoadFloat4(&color);
-	m_light.Direction = XMLoadFloat4(&dir);
-	XMFLOAT4 misc = XMFLOAT4(spotAngle, attenuation, (float)type, 0.0f);
-	m_light.X_SpotAngleAndY_AttenuationAndZ_LightType = XMLoadFloat4(&misc);
+	m_light.Position = pos;
+	m_light.Color = color;
+	m_light.Direction = dir;
+	Vector4 misc = Vector4(spotAngle, attenuation, (float)type, 0.0f);
+	m_light.X_SpotAngleAndY_AttenuationAndZ_LightType = misc;
 
 }
 

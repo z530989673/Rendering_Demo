@@ -2,3 +2,16 @@ Debug
 /Rendering_Demo.opensdf
 /Rendering_Demo.sdf
 /Rendering_Demo.v12.suo
+/.vs/Rendering_Demo/v14/*.suo
+/Rendering_Demo.VC.db
+/Rendering_Demo/x64/Release/*.obj
+/Rendering_Demo/x64/Release/*.res
+/Rendering_Demo/x64/Release/*.log
+/Rendering_Demo/x64/Release/Rendering_Demo.tlog/*.tlog
+/Rendering_Demo/x64/Release/Rendering_Demo.tlog/*.lastbuildstate
+/Rendering_Demo/x64/Release/*.pdb
+/x64/Release/*.cso
+/x64/Release/*.exe
+/x64/Release/*.iobj
+/x64/Release/*.ipdb
+/x64/Release/*.pdb

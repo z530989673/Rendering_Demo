@@ -3,11 +3,11 @@
 
 void CameraComponent::Update()
 {
-	XMMATRIX worldMat = XMLoadFloat4x4(&gameObject->GetWorldTransform());
-	m_eyePos.x = gameObject->GetWorldTransform()._41;
-	m_eyePos.y = gameObject->GetWorldTransform()._42;
-	m_eyePos.z = gameObject->GetWorldTransform()._43;
-	XMStoreFloat4x4(&m_view, XMMatrixInverse(NULL, worldMat));
+	Matrix4x4 worldMat = gameObject->GetWorldTransform();
+	m_eyePos.x = worldMat(0, 3);
+	m_eyePos.y = worldMat(1, 3);
+	m_eyePos.z = worldMat(2, 3);
+	m_view = worldMat.Inverse();
 }
 
 void CameraComponent::Bind()
@@ -21,35 +21,36 @@ void CameraComponent::Bind()
 
 CameraComponent::CameraComponent()
 {
-	m_eyePos = XMFLOAT4(0.0f, 0.0f, -2.0f, 0.0f);
-	XMVECTOR target = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	m_eyePos = Vector3(0.0f, 0.0f, -2.0f);
+	Vector3 target = Vector3(0.0f, 1.0f, 0.0f);
+	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 
-	XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(XMLoadFloat4(&m_eyePos), target, up));
-	XMStoreFloat4x4(&m_proj, XMMatrixPerspectiveFovLH(XM_PIDIV2, D3D11Renderer::Instance()->GetAspectRatio(), 0.01f, 100.0f));
+	m_view = Matrix4x4::LookAt(target, m_eyePos, up);
+	m_proj = Matrix4x4::Perspective(XM_PIDIV2, D3D11Renderer::Instance()->GetAspectRatio(), 0.01f, 100.0f, -1);
 }
 
-CameraComponent::CameraComponent(XMFLOAT4 pos, XMFLOAT4 target, XMFLOAT4 up, float fov, float np, float fp)
+CameraComponent::CameraComponent(Vector3 pos, Vector3 target, Vector3 up, float fov, float np, float fp)
 {
 	m_eyePos = pos;
-	XMStoreFloat4x4(&m_view, XMMatrixLookAtLH(XMLoadFloat4(&pos), XMLoadFloat4(&target), XMLoadFloat4(&up)));
-	XMStoreFloat4x4(&m_proj, XMMatrixPerspectiveFovLH(fov, D3D11Renderer::Instance()->GetAspectRatio(), np, fp));
+	m_view = Matrix4x4::LookAt(target, m_eyePos, up);
+	m_proj = Matrix4x4::Perspective(fov, D3D11Renderer::Instance()->GetAspectRatio(), np, fp, -1);
 }
 
-CameraComponent::CameraComponent(XMMATRIX& view, float fov, float np, float fp)
+CameraComponent::CameraComponent(Matrix4x4& view, float fov, float np, float fp)
 {
-	XMStoreFloat4x4(&m_view, view);
+	m_view = view;
+	Matrix4x4 a = view.Inverse();
 	float x = 0, y = 0, z = 0;
 	for (int i = 0; i < 3; i++)
 	{
-		x -= m_view.m[3][i] * m_view.m[0][i];
-		y -= m_view.m[3][i] * m_view.m[1][i];
-		z -= m_view.m[3][i] * m_view.m[2][i];
+		x -= m_view(i, 3) * m_view(i, 0);
+		y -= m_view(i, 3) * m_view(i, 1);
+		z -= m_view(i, 3) * m_view(i, 2);
 	}
 	m_eyePos.x = x;
 	m_eyePos.y = y;
 	m_eyePos.z = z;
-	XMStoreFloat4x4(&m_proj, XMMatrixPerspectiveFovLH(fov, D3D11Renderer::Instance()->GetAspectRatio(), np, fp));
+	m_proj = Matrix4x4::Perspective(fov, D3D11Renderer::Instance()->GetAspectRatio(), np, fp, -1);
 }
 
 CameraComponent::~CameraComponent()

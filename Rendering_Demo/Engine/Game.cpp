@@ -1,11 +1,13 @@
 #include "Game.h"
 
+using namespace mathfu;
+
 Game* Game::m_instance = nullptr;
 
 bool Game::InitGame(HINSTANCE hInst, HWND hWnd)
 {
-
 	renderer = D3D11Renderer::Instance();
+
 	g_hInst = hInst;
 	g_hWnd = hWnd;
 	GetClientRect(g_hWnd, &g_rect);
@@ -31,9 +33,9 @@ void Game::Start()
 
 
 	//add a camera
-	XMFLOAT4 pos = XMFLOAT4(3.0f, 3.0f, -3.0f, 0.0f);
-	XMFLOAT4 target = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	XMFLOAT4 up = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
+	Vector3 pos = Vector3(3.0f, 3.0f, -3.0f);
+	Vector3 target = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / 2, 0.1f, 100);
 	CameraComponent* cc = camera->GetComponent<CameraComponent>();
 	CameraManager::Instance()->SetMainCamera(cc);
@@ -41,16 +43,16 @@ void Game::Start()
 	camera->AddComponent(ctlc);
 
 	// add a directional light
-	XMFLOAT4 lightPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 lightPos = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 	Light::LIGHTTYPE lightType = Light::LIGHTTYPE::Directional;
-	XMFLOAT4 lightDir = XMFLOAT4(-2.0f, -1.0f, -1.0f, 0.0f);
+	Vector4 lightDir = Vector4(-2.0f, -1.0f, -1.0f, 0.0f);
 	LightManager::Instance()->CreateLight(lightPos, lightType, lightDir);
 
 	// add a spot light
-	XMFLOAT4 spotLightPos = XMFLOAT4(-0.0f, 1.5f, -1.6f, 0.0f);
+	Vector4 spotLightPos = Vector4(-0.0f, 1.5f, -1.6f, 0.0f);
 	Light::LIGHTTYPE spotLightType = Light::LIGHTTYPE::Point;
-	XMFLOAT4 spotLightDir = XMFLOAT4(-2.0f, -1.0f, -1.0f, 0.0f);
-	XMFLOAT4 spotLightColor = XMFLOAT4(3.0f, 3.0f, 0.0f, 0.0f);
+	Vector4 spotLightDir = Vector4(-2.0f, -1.0f, -1.0f, 0.0f);
+	Vector4 spotLightColor = Vector4(3.0f, 3.0f, 0.0f, 0.0f);
 	LightManager::Instance()->CreateLight(spotLightPos, spotLightType, spotLightDir, true, spotLightColor);
 }
 

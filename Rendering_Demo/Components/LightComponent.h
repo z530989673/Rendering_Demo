@@ -14,7 +14,7 @@ public:
 	bool CheckIfWithinRange(RenderingComponent*);
 	Light& GetLight(){ return m_light; };
 
-	LightComponent(XMFLOAT4 pos, Light::LIGHTTYPE type, XMFLOAT4 dir, bool isCastingShadow, XMFLOAT4 color, float range, float spotAngle, float attenuation);
+	LightComponent(Vector4 pos, Light::LIGHTTYPE type, Vector4 dir, bool isCastingShadow, Vector4 color, float range, float spotAngle, float attenuation);
 	LightComponent();
 	~LightComponent();
 

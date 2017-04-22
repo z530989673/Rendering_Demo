@@ -31,14 +31,14 @@ public:
 	void RemoveChild(GameObject*);
 	void SetParent(GameObject*);
 
-	XMFLOAT4 GetPos();
-	XMFLOAT4 GetUP();
-	XMFLOAT4 GetForward();
-	XMFLOAT4 GetRight();
-	XMFLOAT4X4 GetWorldTransform(){ return m_worldTransform; }
+	Vector4 GetPos();
+	Vector4 GetUP();
+	Vector4 GetForward();
+	Vector4 GetRight();
+	Matrix4x4 GetWorldTransform(){ return m_worldTransform; }
 
 	void SetPos(float x, float y, float z);
-	void SetWorldMatrix(XMMATRIX& mat);
+	void SetWorldMatrix(Matrix4x4& mat);
 
 	void MoveForward(float dis);
 	void MoveBackward(float dis);
@@ -54,7 +54,7 @@ public:
 
 	GameObject();
 	GameObject(float posX, float posY, float posZ);
-	GameObject(XMMATRIX& mat);
+	GameObject(Matrix4x4& mat);
 	~GameObject();
 
 	void setEnabled(bool e){ m_enabled = e; }
@@ -63,6 +63,6 @@ public:
 private:
 	bool m_enabled = true;
 	std::vector<Component*> m_components;
-	XMFLOAT4X4 m_worldTransform;
+	Matrix4x4 m_worldTransform;
 };
 

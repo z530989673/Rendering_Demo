@@ -2,11 +2,12 @@
 
 CameraManager* CameraManager::m_instance = nullptr;
 
-GameObject* CameraManager::CreateCamera(XMFLOAT4 pos, XMFLOAT4 target, XMFLOAT4 up, float fov, float np, float fp)
+GameObject* CameraManager::CreateCamera(Vector3 pos, Vector3 target, Vector3 up, float fov, float np, float fp)
 {
-	XMMATRIX view = XMMatrixLookAtLH(XMLoadFloat4(&pos), XMLoadFloat4(&target), XMLoadFloat4(&up));
+	Matrix4x4 view = Matrix4x4::LookAt(target, pos, up);
+	Matrix4x4 viewInv = view.Inverse();
 
-	GameObject* camera = new GameObject(XMMatrixInverse(NULL, view));
+	GameObject* camera = new GameObject(viewInv);
 	CameraComponent* cc = new CameraComponent(view, fov, np, fp);
 	camera->AddComponent(cc);
 	camera->SetParent(GameObject::ROOTNODE);

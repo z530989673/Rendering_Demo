@@ -15,7 +15,7 @@ public:
 	}
 
 	void SetMainCamera(CameraComponent*);
-	GameObject* CreateCamera(XMFLOAT4 pos, XMFLOAT4 target, XMFLOAT4 up, float fov, float np, float fp);
+	GameObject* CreateCamera(Vector3 pos, Vector3 target, Vector3 up, float fov, float np, float fp);
 	CameraComponent* GetMainCamera();
 	std::vector<CameraComponent*>* getAllCameras(){ return &m_cameras; }
 

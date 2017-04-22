@@ -62,7 +62,7 @@ private:
 	ID3D11Buffer*				m_perObjCBGPU;
 
 	//temp, wirte your own matrix and vector class
-	XMFLOAT4X4*					m_world;
-	XMFLOAT4X4*					m_view;
-	XMFLOAT4X4*					m_proj;
+	Matrix4x4					m_world;
+	Matrix4x4					m_view;
+	Matrix4x4					m_proj;
 };
