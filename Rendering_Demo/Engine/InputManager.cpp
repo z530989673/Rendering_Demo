@@ -15,7 +15,7 @@ InputManager::~InputManager() {
 void InputManager::Update() {
 	m_lastKeyState = m_keyState;
 	for (int x = 0; x < 256; x++)
-		m_keyState[x] = (GetAsyncKeyState(x)) >> 15 == 1;
+		m_keyState[x] = ((GetAsyncKeyState(x)) >> 15)  != 0;
 }
 
 bool InputManager::GetKeyDown(char key) {
