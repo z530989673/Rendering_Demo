@@ -5,6 +5,7 @@
     <FxCompile Include="Shaders\DefaultTex_VS.hlsl" />
     <FxCompile Include="Shaders\Default_PS.hlsl" />
     <FxCompile Include="Shaders\Default_VS.hlsl" />
+    <FxCompile Include="Shaders\LightHelper.fx" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Basic\RenderTexture.cpp" />
@@ -27,6 +28,14 @@
     <ClCompile Include="Components\ControllerComponent.cpp" />
     <ClCompile Include="Basic\Timer.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
+    <ClCompile Include="Tree\Branch.cpp" />
+    <ClCompile Include="Tree\Leaf.cpp" />
+    <ClCompile Include="Tree\RootNode.cpp" />
+    <ClCompile Include="Tree\Tree.cpp" />
+    <ClCompile Include="Tree\TreeBone.cpp" />
+    <ClCompile Include="Tree\TreeNode.cpp" />
+    <ClCompile Include="Tree\TreeSkeleton.cpp" />
+    <ClCompile Include="Tree\Trunk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic\RenderTexture.h" />
@@ -89,6 +98,14 @@
     <ClInclude Include="ThrirdParty\mathfu\include\mathfu\rect.h" />
     <ClInclude Include="ThrirdParty\mathfu\include\mathfu\utilities.h" />
     <ClInclude Include="ThrirdParty\mathfu\include\mathfu\vector.h" />
+    <ClInclude Include="Tree\Branch.h" />
+    <ClInclude Include="Tree\Leaf.h" />
+    <ClInclude Include="Tree\RootNode.h" />
+    <ClInclude Include="Tree\Tree.h" />
+    <ClInclude Include="Tree\TreeBone.h" />
+    <ClInclude Include="Tree\TreeNode.h" />
+    <ClInclude Include="Tree\TreeSkeleton.h" />
+    <ClInclude Include="Tree\Trunk.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RenderingDemo.rc" />
