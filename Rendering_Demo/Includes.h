@@ -8,6 +8,7 @@
 
 #include "mathfu/vector.h"
 #include "mathfu/matrix.h"
+#include "mathfu/quaternion.h"
 
 using namespace DirectX;
 using namespace std;
@@ -19,6 +20,7 @@ using namespace mathfu;
 #define Vector3 Vector<float, 3>
 #define Vector4 Vector<float, 4>
 #define Matrix4x4 Matrix<float, 4, 4>
+#define Quaternion Quaternion<float>
 
 struct Light
 {
@@ -56,7 +58,7 @@ struct PEROBJ_CONSTANT_BUFFER
 };
 
 
-#ifdef DEBUG
+#ifdef _DEBUG
 #include "Debugging/Debug.h"
 #endif // DEBUG
 

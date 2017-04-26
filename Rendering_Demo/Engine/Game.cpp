@@ -1,7 +1,5 @@
 #include "Game.h"
 
-using namespace mathfu;
-
 Game* Game::m_instance = nullptr;
 
 bool Game::InitGame(HINSTANCE hInst, HWND hWnd)

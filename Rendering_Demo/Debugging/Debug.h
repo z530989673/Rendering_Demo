@@ -14,7 +14,7 @@ public:
 	template<typename T>
 	inline void static Log(T value)
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		std::cout << value << std::endl;
 #endif // DEBUG
 	}

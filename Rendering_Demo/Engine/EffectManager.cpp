@@ -1,8 +1,5 @@
 #include "EffectManager.h"
 
-//temp
-#include "CameraManager.h"
-
 EffectManager* EffectManager::m_instance = nullptr;
 
 void EffectManager::DrawEffects()
