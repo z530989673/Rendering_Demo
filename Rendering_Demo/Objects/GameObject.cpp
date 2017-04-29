@@ -41,7 +41,11 @@ void GameObject::RotateX(float angle)
 
 void GameObject::RotateY(float angle)
 {
-	m_worldTransform *= Matrix4x4::FromRotationMatrix(Matrix4x4::RotationY(angle));
+	Vector4 pos = m_worldTransform.GetColumn(3);
+	m_worldTransform = Matrix4x4::FromRotationMatrix(Matrix4x4::RotationY(angle)) * m_worldTransform;
+	m_worldTransform(0, 3) = pos(0);
+	m_worldTransform(1, 3) = pos(1);
+	m_worldTransform(2, 3) = pos(2);
 }
 
 void GameObject::RotateZ(float angle)

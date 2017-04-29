@@ -6,5 +6,7 @@ class Trunk :
 public:
 	Trunk();
 	~Trunk();
+
+	virtual NODE_TYPE GetNodeType() { return NODE_TRUNK; }
 };
 

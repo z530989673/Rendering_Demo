@@ -6,5 +6,7 @@ class Branch :
 public:
 	Branch();
 	~Branch();
+
+	virtual NODE_TYPE GetNodeType() { return NODE_BRANCH; }
 };
 

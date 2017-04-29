@@ -18,6 +18,14 @@ void ControllerComponent::Update()
 	{
 		gameObject->MoveRight(m_moveSpeed * Timer::GetDeltaTime());
 	}
+	if (InputManager::Instance()->GetKeyHold('Q'))
+	{
+		gameObject->MoveDown(m_moveSpeed * Timer::GetDeltaTime());
+	}
+	if (InputManager::Instance()->GetKeyHold('E'))
+	{
+		gameObject->MoveUp(m_moveSpeed * Timer::GetDeltaTime());
+	}
 	if (InputManager::Instance()->GetKeyHold(VK_UP))
 	{
 		gameObject->RotateX(-m_moveSpeed * Timer::GetDeltaTime());

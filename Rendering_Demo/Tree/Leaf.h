@@ -6,5 +6,7 @@ class Leaf :
 public:
 	Leaf();
 	~Leaf();
+
+	virtual NODE_TYPE GetNodeType() { return NODE_LEAF; }
 };
 

@@ -6,5 +6,7 @@ class RootNode :
 public:
 	RootNode();
 	~RootNode();
+
+	virtual NODE_TYPE GetNodeType() { return NODE_ROOT; }
 };
 
