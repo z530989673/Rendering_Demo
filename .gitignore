@@ -14,3 +14,5 @@
 *.db
 *.opensdf
 *.sdf
+/x64/Debug/*.idb
+/x64/Debug/*.ilk

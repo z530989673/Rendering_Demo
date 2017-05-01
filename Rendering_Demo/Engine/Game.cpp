@@ -34,7 +34,7 @@ void Game::Start()
 	Vector3 target = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 up = Vector3(0.0f, 1.0f, 0.0f);
 
-	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / (180/80), 0.1f, 100);
+	GameObject* camera = CameraManager::Instance()->CreateCamera(pos, target, up, XM_PI / 3, 0.1f, 100);
 	CameraComponent* cc = camera->GetComponent<CameraComponent>();
 	CameraManager::Instance()->SetMainCamera(cc);
 	ControllerComponent* ctlc = new ControllerComponent();

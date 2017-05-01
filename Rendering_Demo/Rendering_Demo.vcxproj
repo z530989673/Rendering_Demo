@@ -195,6 +195,7 @@
     <ClCompile Include="Components\ControllerComponent.cpp" />
     <ClCompile Include="Components\LightComponent.cpp" />
     <ClCompile Include="Components\RenderingComponent.cpp" />
+    <ClCompile Include="Components\TreeComponent.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="Debugging\Debug.cpp" />
     <ClCompile Include="Engine\CameraManager.cpp" />
@@ -208,6 +209,7 @@
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Resources\FBXReader.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
+    <ClCompile Include="TreeModel.cpp" />
     <ClCompile Include="Tree\Branch.cpp" />
     <ClCompile Include="Tree\Leaf.cpp" />
     <ClCompile Include="Tree\RootNode.cpp" />
@@ -225,6 +227,7 @@
     <ClInclude Include="Components\ControllerComponent.h" />
     <ClInclude Include="Components\LightComponent.h" />
     <ClInclude Include="Components\RenderingComponent.h" />
+    <ClInclude Include="Components\TreeComponent.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="Debugging\Debug.h" />
     <ClInclude Include="Engine\CameraManager.h" />
@@ -278,6 +281,7 @@
     <ClInclude Include="ThrirdParty\mathfu\include\mathfu\rect.h" />
     <ClInclude Include="ThrirdParty\mathfu\include\mathfu\utilities.h" />
     <ClInclude Include="ThrirdParty\mathfu\include\mathfu\vector.h" />
+    <ClInclude Include="TreeModel.h" />
     <ClInclude Include="Tree\Branch.h" />
     <ClInclude Include="Tree\Leaf.h" />
     <ClInclude Include="Tree\RootNode.h" />

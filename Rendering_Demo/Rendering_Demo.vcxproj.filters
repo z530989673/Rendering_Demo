@@ -35,6 +35,8 @@
     <ClCompile Include="Tree\TreeNode.cpp" />
     <ClCompile Include="Tree\TreeSkeleton.cpp" />
     <ClCompile Include="Tree\Trunk.cpp" />
+    <ClCompile Include="Components\TreeComponent.cpp" />
+    <ClCompile Include="TreeModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic\RenderTexture.h" />
@@ -105,6 +107,8 @@
     <ClInclude Include="Tree\TreeNode.h" />
     <ClInclude Include="Tree\TreeSkeleton.h" />
     <ClInclude Include="Tree\Trunk.h" />
+    <ClInclude Include="Components\TreeComponent.h" />
+    <ClInclude Include="TreeModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RenderingDemo.rc" />
